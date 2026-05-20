@@ -8,10 +8,12 @@ export default class MenuScene extends Phaser.Scene {
 
   create() {
 
-    // FONDO
+    // ---------- FONDO ----------
+
     this.cameras.main.setBackgroundColor('#0f172a')
 
-    // DECORACIÓN
+    // ---------- DECORACIÓN ----------
+
     this.add.circle(
       120,
       100,
@@ -28,7 +30,8 @@ export default class MenuScene extends Phaser.Scene {
       0.08
     )
 
-    // TÍTULO
+    // ---------- TÍTULO ----------
+
     this.add.text(
       400,
       90,
@@ -40,7 +43,8 @@ export default class MenuScene extends Phaser.Scene {
       }
     ).setOrigin(0.5)
 
-    // SUBTÍTULO
+    // ---------- SUBTÍTULO ----------
+
     this.add.text(
       400,
       145,
@@ -77,7 +81,7 @@ export default class MenuScene extends Phaser.Scene {
 
     sesion2.on('pointerdown', () => {
 
-      alert('Próximamente')
+      this.scene.start('Session2Scene')
 
     })
 

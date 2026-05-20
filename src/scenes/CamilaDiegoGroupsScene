@@ -1,0 +1,114 @@
+import Phaser from 'phaser'
+
+import createBackButton from '../utils/createBackButton'
+
+export default class CamilaDiegoGroupsScene extends Phaser.Scene {
+
+  constructor() {
+    super('CamilaDiegoGroupsScene')
+  }
+
+  create() {
+
+    this.cameras.main.setBackgroundColor('#0f172a')
+
+    createBackButton(
+      this,
+      'CamilaDiegoScene'
+    )
+
+    // ---------- TÍTULO ----------
+
+    this.add.text(
+      400,
+      80,
+      '👥 Trabajo grupal',
+      {
+        fontSize: '40px',
+        color: '#f8fafc',
+        fontStyle: 'bold'
+      }
+    ).setOrigin(0.5)
+
+    // ---------- PANEL ----------
+
+    const panel = this.add.rectangle(
+      400,
+      300,
+      700,
+      400,
+      0x1e293b,
+      0.95
+    )
+
+    panel.setStrokeStyle(
+      2,
+      0x334155
+    )
+
+    // ---------- TEXTO ----------
+
+    this.add.text(
+      400,
+      280,
+      'Cada grupo deberá:\n\n• observar su cartilla\n• analizar lo que ocurre\n• conversar sobre cómo se sienten\nlos personajes\n• y decidir dónde creen\nque encaja la escena\n\nCuando todos los grupos terminen,\ncompartan el orden que escogieron.',
+      {
+        fontSize: '27px',
+        color: '#f8fafc',
+        align: 'center',
+        lineSpacing: 12,
+        wordWrap: {
+          width: 580
+        }
+      }
+    ).setOrigin(0.5)
+
+    // ---------- BOTÓN ----------
+
+    const button = this.add.rectangle(
+      400,
+      520,
+      280,
+      70,
+      0x7c3aed
+    ).setInteractive()
+
+    button.setStrokeStyle(
+      2,
+      0xffffff
+    )
+
+    const text = this.add.text(
+      400,
+      520,
+      'VER HISTORIA',
+      {
+        fontSize: '28px',
+        color: '#ffffff',
+        fontStyle: 'bold'
+      }
+    ).setOrigin(0.5)
+
+    button.on('pointerover', () => {
+
+      button.setScale(1.03)
+      text.setScale(1.03)
+
+    })
+
+    button.on('pointerout', () => {
+
+      button.setScale(1)
+      text.setScale(1)
+
+    })
+
+    button.on('pointerdown', () => {
+
+      this.scene.start('CamilaDiegoVideoScene')
+
+    })
+
+  }
+
+}

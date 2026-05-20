@@ -14,6 +14,13 @@ import LyricScene from './scenes/LyricScene'
 import QuestionsScene from './scenes/QuestionsScene'
 import ClosingScene from './scenes/ClosingScene'
 
+// ---------- CAMILA Y DIEGO ----------
+
+import CamilaDiegoScene from './scenes/CamilaDiegoScene'
+import CamilaDiegoGroupsScene from './scenes/CamilaDiegoGroupsScene'
+import CamilaDiegoVideoScene from './scenes/CamilaDiegoVideoScene'
+import CamilaDiegoReflectionScene from './scenes/CamilaDiegoReflectionScene'
+
 const config = {
 
   type: Phaser.AUTO,
@@ -45,7 +52,14 @@ const config = {
     ReflectionScene,
     LyricScene,
     QuestionsScene,
-    ClosingScene
+    ClosingScene,
+
+    // ---------- CAMILA Y DIEGO ----------
+
+    CamilaDiegoScene,
+    CamilaDiegoGroupsScene,
+    CamilaDiegoVideoScene,
+    CamilaDiegoReflectionScene
 
   ]
 
