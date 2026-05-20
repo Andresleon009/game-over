@@ -1,7 +1,6 @@
 import Phaser from 'phaser'
 
 import createBackButton from '../utils/createBackButton'
-
 export default class Session2Scene extends Phaser.Scene {
 
   constructor() {
@@ -18,7 +17,8 @@ export default class Session2Scene extends Phaser.Scene {
 
     createBackButton(
       this,
-      'MenuScene'
+      'MenuScene',
+      'menu'
     )
 
     // ---------- TÍTULO ----------

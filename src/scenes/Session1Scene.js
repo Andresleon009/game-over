@@ -1,5 +1,7 @@
 import Phaser from 'phaser'
 
+import createBackButton from '../utils/createBackButton'
+
 export default class Session1Scene extends Phaser.Scene {
 
   constructor() {
@@ -9,6 +11,12 @@ export default class Session1Scene extends Phaser.Scene {
   create() {
 
     this.cameras.main.setBackgroundColor('#0f172a')
+
+    createBackButton(
+      this,
+      'MenuScene',
+      'menu'
+    )
 
     // TÍTULO
     this.add.text(

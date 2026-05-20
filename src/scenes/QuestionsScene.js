@@ -1,7 +1,6 @@
 import Phaser from 'phaser'
 
 import createBackButton from '../utils/createBackButton'
-
 export default class QuestionsScene extends Phaser.Scene {
 
   constructor() {

@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 
 import createBackButton from '../utils/createBackButton'
+import { getCamilaDiegoLayout, getIntroLayout } from '../utils/camilaDiegoLayout'
 
 export default class CamilaDiegoScene extends Phaser.Scene {
 
@@ -9,6 +10,8 @@ export default class CamilaDiegoScene extends Phaser.Scene {
   }
 
   create() {
+
+    const layout = getIntroLayout(getCamilaDiegoLayout(this))
 
     // ---------- FONDO ----------
 
@@ -33,11 +36,11 @@ export default class CamilaDiegoScene extends Phaser.Scene {
     // ---------- TÍTULO ----------
 
     this.add.text(
-      400,
-      70,
+      layout.centerX,
+      layout.titleY,
       '🖼️ Camila y Diego',
       {
-        fontSize: '42px',
+        fontSize: layout.titleFontSize,
         color: '#f8fafc',
         fontStyle: 'bold'
       }
@@ -46,32 +49,32 @@ export default class CamilaDiegoScene extends Phaser.Scene {
     // ---------- PANEL ----------
 
     const panel = this.add.rectangle(
-      400,
-      310,
-      700,
-      420,
+      layout.centerX,
+      layout.panelY,
+      layout.panelW,
+      layout.panelH,
       0x1e293b,
       0.95
     )
 
     panel.setStrokeStyle(
       2,
-      0x334155
+      layout.panelStroke
     )
 
     // ---------- TEXTO ----------
 
     this.add.text(
-      400,
-      250,
+      layout.centerX,
+      layout.textY,
       'La siguiente historia muestra\nuna relación que cambia progresivamente.\n\nDivide a las y los participantes\nen pequeños grupos.\n\nEntrega las cartillas desordenadas\npara que puedan organizarlas\nsegún el orden que consideren adecuado.',
       {
-        fontSize: '28px',
+        fontSize: layout.bodyFontSize,
         color: '#f8fafc',
         align: 'center',
-        lineSpacing: 12,
+        lineSpacing: layout.bodyLineSpacing,
         wordWrap: {
-          width: 580
+          width: layout.wordWrapWidth
         }
       }
     ).setOrigin(0.5)
@@ -79,10 +82,10 @@ export default class CamilaDiegoScene extends Phaser.Scene {
     // ---------- CONTINUAR ----------
 
     const continueButton = this.add.rectangle(
-      400,
-      520,
-      260,
-      70,
+      layout.centerX,
+      layout.continueY,
+      layout.continueW,
+      layout.buttonHeight,
       0x06b6d4
     ).setInteractive()
 
@@ -92,11 +95,11 @@ export default class CamilaDiegoScene extends Phaser.Scene {
     )
 
     const continueText = this.add.text(
-      400,
-      520,
+      layout.centerX,
+      layout.continueY,
       'CONTINUAR',
       {
-        fontSize: '28px',
+        fontSize: layout.buttonFontSize,
         color: '#ffffff',
         fontStyle: 'bold'
       }

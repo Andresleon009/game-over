@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 
 import createBackButton from '../utils/createBackButton'
+import { getCamilaDiegoLayout, getVideoLayout } from '../utils/camilaDiegoLayout'
 
 export default class CamilaDiegoVideoScene extends Phaser.Scene {
 
@@ -9,6 +10,8 @@ export default class CamilaDiegoVideoScene extends Phaser.Scene {
   }
 
   create() {
+
+    const layout = getVideoLayout(getCamilaDiegoLayout(this))
 
     // ---------- FONDO ----------
 
@@ -33,11 +36,11 @@ export default class CamilaDiegoVideoScene extends Phaser.Scene {
     // ---------- TÍTULO ----------
 
     this.add.text(
-      400,
-      80,
+      layout.centerX,
+      layout.titleY,
       '🎬 Historia completa',
       {
-        fontSize: '42px',
+        fontSize: layout.titleFontSize,
         color: '#f8fafc',
         fontStyle: 'bold'
       }
@@ -46,32 +49,32 @@ export default class CamilaDiegoVideoScene extends Phaser.Scene {
     // ---------- PANEL ----------
 
     const panel = this.add.rectangle(
-      400,
-      290,
-      700,
-      330,
+      layout.centerX,
+      layout.panelY,
+      layout.panelW,
+      layout.panelH,
       0x1e293b,
       0.95
     )
 
     panel.setStrokeStyle(
       2,
-      0x334155
+      layout.panelStroke
     )
 
     // ---------- TEXTO ----------
 
     this.add.text(
-      400,
-      240,
+      layout.centerX,
+      layout.textY,
       'Después de escuchar las interpretaciones\nde los grupos, presentemos ahora\nel orden correcto de la historia.\n\nObserven cómo cambia progresivamente\nla relación entre Camila y Diego.',
       {
-        fontSize: '28px',
+        fontSize: layout.bodyFontSize,
         color: '#f8fafc',
         align: 'center',
-        lineSpacing: 12,
+        lineSpacing: layout.bodyLineSpacing,
         wordWrap: {
-          width: 580
+          width: layout.wordWrapWidth
         }
       }
     ).setOrigin(0.5)
@@ -79,10 +82,10 @@ export default class CamilaDiegoVideoScene extends Phaser.Scene {
     // ---------- BOTÓN VIDEO ----------
 
     const videoButton = this.add.rectangle(
-      400,
-      390,
-      320,
-      80,
+      layout.centerX,
+      layout.videoButtonY,
+      layout.videoButtonW,
+      layout.videoButtonH,
       0xef4444
     ).setInteractive()
 
@@ -92,11 +95,11 @@ export default class CamilaDiegoVideoScene extends Phaser.Scene {
     )
 
     const videoText = this.add.text(
-      400,
-      390,
+      layout.centerX,
+      layout.videoButtonY,
       '▶ VER VIDEO',
       {
-        fontSize: '30px',
+        fontSize: layout.videoButtonFontSize,
         color: '#ffffff',
         fontStyle: 'bold'
       }
@@ -132,10 +135,10 @@ export default class CamilaDiegoVideoScene extends Phaser.Scene {
     // ---------- CONTINUAR ----------
 
     const continueButton = this.add.rectangle(
-      400,
-      530,
-      280,
-      70,
+      layout.centerX,
+      layout.continueY,
+      layout.continueW,
+      layout.buttonHeight,
       0x10b981
     ).setInteractive()
 
@@ -145,11 +148,11 @@ export default class CamilaDiegoVideoScene extends Phaser.Scene {
     )
 
     const continueText = this.add.text(
-      400,
-      530,
+      layout.centerX,
+      layout.continueY,
       'REFLEXIONAR',
       {
-        fontSize: '28px',
+        fontSize: layout.buttonFontSize,
         color: '#ffffff',
         fontStyle: 'bold'
       }

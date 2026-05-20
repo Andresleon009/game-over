@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 
 import createBackButton from '../utils/createBackButton'
+import { getCamilaDiegoLayout, getReflectionLayout } from '../utils/camilaDiegoLayout'
 
 export default class CamilaDiegoReflectionScene extends Phaser.Scene {
 
@@ -9,6 +10,8 @@ export default class CamilaDiegoReflectionScene extends Phaser.Scene {
   }
 
   create() {
+
+    const layout = getReflectionLayout(getCamilaDiegoLayout(this))
 
     // ---------- FONDO ----------
 
@@ -33,11 +36,11 @@ export default class CamilaDiegoReflectionScene extends Phaser.Scene {
     // ---------- TÍTULO ----------
 
     this.add.text(
-      400,
-      70,
+      layout.centerX,
+      layout.titleY,
       '💬 Reflexionemos',
       {
-        fontSize: '42px',
+        fontSize: layout.titleFontSize,
         color: '#f8fafc',
         fontStyle: 'bold'
       }
@@ -46,43 +49,43 @@ export default class CamilaDiegoReflectionScene extends Phaser.Scene {
     // ---------- PANEL ----------
 
     const panel = this.add.rectangle(
-      400,
-      320,
-      720,
-      430,
+      layout.centerX,
+      layout.panelY,
+      layout.panelW,
+      layout.panelH,
       0x1e293b,
       0.95
     )
 
     panel.setStrokeStyle(
       2,
-      0x334155
+      layout.panelStroke
     )
 
     // ---------- PREGUNTAS ----------
 
     this.add.text(
-      400,
-      290,
+      layout.centerX,
+      layout.questionsY,
       '• ¿Qué observaron en la relación\nentre Camila y Diego?\n\n• ¿Cómo fue cambiando el trato\nde Diego hacia Camila?\n\n• ¿Cómo creen que se sentía Camila?\n\n• ¿Qué situaciones les llamaron\nmás la atención?\n\n• ¿Qué señales de violencia\naparecieron en la historia?',
       {
-        fontSize: '27px',
+        fontSize: layout.bodyFontSize,
         color: '#f8fafc',
         align: 'left',
-        lineSpacing: 14,
+        lineSpacing: layout.bodyLineSpacing,
         wordWrap: {
-          width: 580
+          width: layout.wordWrapWidth
         }
       }
-    ).setOrigin(0.5)
+    ).setOrigin(0.5, 0.5)
 
     // ---------- CIERRE ----------
 
     const finishButton = this.add.rectangle(
-      400,
-      540,
-      260,
-      70,
+      layout.centerX,
+      layout.finishY,
+      layout.finishW,
+      layout.buttonHeight,
       0x06b6d4
     ).setInteractive()
 
@@ -92,11 +95,11 @@ export default class CamilaDiegoReflectionScene extends Phaser.Scene {
     )
 
     const finishText = this.add.text(
-      400,
-      540,
+      layout.centerX,
+      layout.finishY,
       'FINALIZAR',
       {
-        fontSize: '28px',
+        fontSize: layout.buttonFontSize,
         color: '#ffffff',
         fontStyle: 'bold'
       }

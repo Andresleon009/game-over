@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 
 import createBackButton from '../utils/createBackButton'
+import { getClosingLayout } from '../utils/closingSceneLayout'
 
 export default class ClosingScene extends Phaser.Scene {
 
@@ -9,6 +10,8 @@ export default class ClosingScene extends Phaser.Scene {
   }
 
   create() {
+
+    const layout = getClosingLayout(this)
 
     // FONDO
     this.cameras.main.setBackgroundColor('#0f172a')
@@ -22,7 +25,7 @@ export default class ClosingScene extends Phaser.Scene {
     // DECORACIÓN
     this.add.circle(
       650,
-      120,
+      layout.compact ? 95 : 110,
       180,
       0x06b6d4,
       0.08
@@ -30,11 +33,11 @@ export default class ClosingScene extends Phaser.Scene {
 
     // TÍTULO
     this.add.text(
-      400,
-      120,
+      layout.centerX,
+      layout.titleY,
       '✨ Para reflexionar',
       {
-        fontSize: '42px',
+        fontSize: layout.titleFontSize,
         color: '#f8fafc',
         fontStyle: 'bold'
       }
@@ -42,10 +45,10 @@ export default class ClosingScene extends Phaser.Scene {
 
     // PANEL
     const panel = this.add.rectangle(
-      400,
-      320,
-      650,
-      320,
+      layout.centerX,
+      layout.panelY,
+      layout.panelW,
+      layout.panelH,
       0x1e293b,
       0.95
     )
@@ -57,26 +60,26 @@ export default class ClosingScene extends Phaser.Scene {
 
     // MENSAJE
     this.add.text(
-      400,
-      300,
+      layout.centerX,
+      layout.textY,
       'Las canciones también transmiten ideas,\nroles y formas de relacionarnos.\n\nReflexionar sobre estos mensajes\npuede ayudarnos a construir vínculos\nmás respetuosos y saludables.',
       {
-        fontSize: '30px',
+        fontSize: layout.bodyFontSize,
         color: '#f8fafc',
         align: 'center',
-        lineSpacing: 14,
+        lineSpacing: layout.bodyLineSpacing,
         wordWrap: {
-          width: 540
+          width: layout.wordWrapWidth
         }
       }
     ).setOrigin(0.5)
 
     // BOTÓN FINALIZAR
     const finishButton = this.add.rectangle(
-      400,
-      540,
-      260,
-      70,
+      layout.centerX,
+      layout.finishY,
+      layout.finishW,
+      layout.buttonHeight,
       0x10b981
     ).setInteractive()
 
@@ -86,11 +89,11 @@ export default class ClosingScene extends Phaser.Scene {
     )
 
     const finishText = this.add.text(
-      400,
-      540,
+      layout.centerX,
+      layout.finishY,
       'FINALIZAR',
       {
-        fontSize: '28px',
+        fontSize: layout.buttonFontSize,
         color: '#ffffff',
         fontStyle: 'bold'
       }

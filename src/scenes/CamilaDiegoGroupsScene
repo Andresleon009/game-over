@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 
 import createBackButton from '../utils/createBackButton'
+import { getCamilaDiegoLayout, getGroupsLayout } from '../utils/camilaDiegoLayout'
 
 export default class CamilaDiegoGroupsScene extends Phaser.Scene {
 
@@ -10,6 +11,8 @@ export default class CamilaDiegoGroupsScene extends Phaser.Scene {
 
   create() {
 
+    this.layout = getGroupsLayout(getCamilaDiegoLayout(this))
+
     this.cameras.main.setBackgroundColor('#0f172a')
 
     createBackButton(
@@ -17,14 +20,21 @@ export default class CamilaDiegoGroupsScene extends Phaser.Scene {
       'CamilaDiegoScene'
     )
 
+    // ---------- VARIABLES ----------
+
+    this.remainingTime = 0
+    this.timerEvent = null
+
+    const layout = this.layout
+
     // ---------- TÍTULO ----------
 
     this.add.text(
-      400,
-      80,
+      layout.centerX,
+      layout.titleY,
       '👥 Trabajo grupal',
       {
-        fontSize: '40px',
+        fontSize: layout.titleFontSize,
         color: '#f8fafc',
         fontStyle: 'bold'
       }
@@ -33,43 +43,77 @@ export default class CamilaDiegoGroupsScene extends Phaser.Scene {
     // ---------- PANEL ----------
 
     const panel = this.add.rectangle(
-      400,
-      300,
-      700,
-      400,
+      layout.centerX,
+      layout.panelY,
+      layout.panelW,
+      layout.panelH,
       0x1e293b,
       0.95
     )
 
     panel.setStrokeStyle(
       2,
-      0x334155
+      layout.panelStroke
     )
 
     // ---------- TEXTO ----------
 
     this.add.text(
-      400,
-      280,
-      'Cada grupo deberá:\n\n• observar su cartilla\n• analizar lo que ocurre\n• conversar sobre cómo se sienten\nlos personajes\n• y decidir dónde creen\nque encaja la escena\n\nCuando todos los grupos terminen,\ncompartan el orden que escogieron.',
+      layout.centerX,
+      layout.instructionsY,
+      'Cada grupo deberá:\n\n• observar su cartilla\n• analizar lo que ocurre\n• conversar sobre cómo se sienten\nlos personajes\n• y decidir dónde creen\nque encaja la escena',
       {
-        fontSize: '27px',
+        fontSize: layout.bodyFontSize,
         color: '#f8fafc',
         align: 'center',
-        lineSpacing: 12,
+        lineSpacing: layout.bodyLineSpacing,
         wordWrap: {
-          width: 580
+          width: layout.wordWrapWidth
         }
       }
     ).setOrigin(0.5)
 
-    // ---------- BOTÓN ----------
+    // ---------- TIEMPO ----------
+
+    this.add.text(
+      layout.centerX,
+      layout.timeLabelY,
+      '⏱️ Tiempo sugerido',
+      {
+        fontSize: layout.timeLabelFontSize,
+        color: '#cbd5e1',
+        fontStyle: 'bold'
+      }
+    ).setOrigin(0.5)
+
+    // ---------- BOTONES TIEMPO ----------
+
+    const [fiveX, tenX, fifteenX] = layout.timerButtonXs
+
+    this.createTimerButton(fiveX, layout.timerButtonY, '5 min', 5)
+    this.createTimerButton(tenX, layout.timerButtonY, '10 min', 10)
+    this.createTimerButton(fifteenX, layout.timerButtonY, '15 min', 15)
+
+    // ---------- TIMER TEXTO ----------
+
+    this.timerText = this.add.text(
+      layout.centerX,
+      layout.timerTextY,
+      '00:00',
+      {
+        fontSize: layout.timerTextFontSize,
+        color: '#f8fafc',
+        fontStyle: 'bold'
+      }
+    ).setOrigin(0.5)
+
+    // ---------- BOTÓN HISTORIA ----------
 
     const button = this.add.rectangle(
-      400,
-      520,
-      280,
-      70,
+      layout.centerX,
+      layout.storyButtonY,
+      layout.storyButtonW,
+      layout.storyButtonH,
       0x7c3aed
     ).setInteractive()
 
@@ -79,11 +123,11 @@ export default class CamilaDiegoGroupsScene extends Phaser.Scene {
     )
 
     const text = this.add.text(
-      400,
-      520,
+      layout.centerX,
+      layout.storyButtonY,
       'VER HISTORIA',
       {
-        fontSize: '28px',
+        fontSize: layout.storyButtonFontSize,
         color: '#ffffff',
         fontStyle: 'bold'
       }
@@ -108,6 +152,118 @@ export default class CamilaDiegoGroupsScene extends Phaser.Scene {
       this.scene.start('CamilaDiegoVideoScene')
 
     })
+
+  }
+
+  // ---------- TIMER BUTTON ----------
+
+  createTimerButton(x, y, label, minutes) {
+
+    const layout = this.layout
+
+    const button = this.add.rectangle(
+      x,
+      y,
+      layout.timerButtonW,
+      layout.timerButtonH,
+      0x06b6d4
+    ).setInteractive()
+
+    button.setStrokeStyle(
+      2,
+      0xffffff
+    )
+
+    const text = this.add.text(
+      x,
+      y,
+      label,
+      {
+        fontSize: layout.timerButtonFontSize,
+        color: '#ffffff',
+        fontStyle: 'bold'
+      }
+    ).setOrigin(0.5)
+
+    button.on('pointerover', () => {
+
+      button.setScale(1.05)
+      text.setScale(1.05)
+
+    })
+
+    button.on('pointerout', () => {
+
+      button.setScale(1)
+      text.setScale(1)
+
+    })
+
+    button.on('pointerdown', () => {
+
+      this.startTimer(minutes)
+
+    })
+
+  }
+
+  // ---------- START TIMER ----------
+
+  startTimer(minutes) {
+
+    // detener timer anterior
+
+    if (this.timerEvent) {
+
+      this.timerEvent.remove(false)
+
+    }
+
+    this.remainingTime = minutes * 60
+
+    this.updateTimerText()
+
+    this.timerEvent = this.time.addEvent({
+
+      delay: 1000,
+
+      callback: () => {
+
+        this.remainingTime--
+
+        this.updateTimerText()
+
+        if (this.remainingTime <= 0) {
+
+          this.timerEvent.remove(false)
+
+          this.timerText.setText('✔ Tiempo finalizado')
+
+        }
+
+      },
+
+      callbackScope: this,
+
+      loop: true
+
+    })
+
+  }
+
+  // ---------- UPDATE TIMER ----------
+
+  updateTimerText() {
+
+    const minutes = Math.floor(this.remainingTime / 60)
+    const seconds = this.remainingTime % 60
+
+    const formattedMinutes = String(minutes).padStart(2, '0')
+    const formattedSeconds = String(seconds).padStart(2, '0')
+
+    this.timerText.setText(
+      `${formattedMinutes}:${formattedSeconds}`
+    )
 
   }
 

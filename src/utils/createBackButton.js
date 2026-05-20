@@ -1,4 +1,13 @@
-export default function createBackButton(scene, targetScene) {
+const NAV_DEPTH = 1000
+
+const LABELS = {
+  back: '← VOLVER',
+  menu: '☰ MENÚ'
+}
+
+export default function createBackButton(scene, targetScene, mode = 'back') {
+
+    const label = LABELS[mode] || LABELS.back
 
     const backButton = scene.add.rectangle(
       90,
@@ -7,22 +16,26 @@ export default function createBackButton(scene, targetScene) {
       45,
       0x334155
     ).setInteractive()
-  
+
     backButton.setStrokeStyle(
       2,
       0xffffff
     )
-  
+
+    backButton.setDepth(NAV_DEPTH)
+
     const backText = scene.add.text(
       90,
       50,
-      '← VOLVER',
+      label,
       {
         fontSize: '20px',
         color: '#ffffff',
         fontStyle: 'bold'
       }
     ).setOrigin(0.5)
+
+    backText.setDepth(NAV_DEPTH)
   
     backButton.on('pointerover', () => {
   
