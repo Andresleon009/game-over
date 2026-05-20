@@ -6,9 +6,31 @@ export default class IntroScene extends Phaser.Scene {
     super('IntroScene')
   }
 
+  preload() {
+
+    this.load.image(
+      'logo',
+      'images/logo.png'
+    )
+
+  }
+
   create() {
 
+    // ---------- FONDO ----------
+
     this.cameras.main.setBackgroundColor('#0f172a')
+
+    // ---------- TRANSICIÓN ----------
+
+    this.cameras.main.fadeIn(
+      300,
+      0,
+      0,
+      0
+    )
+
+    // ---------- DECORACIÓN ----------
 
     this.add.circle(
       120,
@@ -26,59 +48,48 @@ export default class IntroScene extends Phaser.Scene {
       0.08
     )
 
-    const panel = this.add.rectangle(
-      400,
-      300,
-      650,
-      420,
-      0x1e293b,
-      0.96
-    )
+    // ---------- LOGO GRANDE ----------
 
-    panel.setStrokeStyle(
-      3,
-      0x334155
-    )
+    this.add.image(
+      400,
+      180,
+      'logo'
+    ).setScale(0.25)
+
+    // ---------- TÍTULO ----------
 
     this.add.text(
       400,
-      120,
+      320,
       'GAME OVER',
       {
-        fontSize: '50px',
+        fontSize: '52px',
         fontStyle: 'bold',
         color: '#f8fafc'
       }
     ).setOrigin(0.5)
 
+    // ---------- SUBTÍTULO ----------
+
     this.add.text(
       400,
-      180,
+      390,
       'Prevención de violencia\ny reflexión crítica',
       {
         fontSize: '28px',
         color: '#cbd5e1',
-        align: 'center'
+        align: 'center',
+        lineSpacing: 10
       }
     ).setOrigin(0.5)
 
-    this.add.text(
-      400,
-      280,
-      'Explora sesiones y actividades\npara reflexionar sobre igualdad,\nrelaciones y convivencia.',
-      {
-        fontSize: '24px',
-        color: '#e2e8f0',
-        align: 'center',
-        lineSpacing: 12
-      }
-    ).setOrigin(0.5)
+    // ---------- BOTÓN ----------
 
     const boton = this.add.rectangle(
       400,
-      450,
-      260,
-      75,
+      520,
+      280,
+      80,
       0x7c3aed
     ).setInteractive()
 
@@ -89,19 +100,21 @@ export default class IntroScene extends Phaser.Scene {
 
     const textoBoton = this.add.text(
       400,
-      450,
+      520,
       'INGRESAR',
       {
-        fontSize: '28px',
+        fontSize: '30px',
         fontStyle: 'bold',
         color: '#ffffff'
       }
     ).setOrigin(0.5)
 
+    // ---------- HOVER ----------
+
     boton.on('pointerover', () => {
 
-      boton.setScale(1.03)
-      textoBoton.setScale(1.03)
+      boton.setScale(1.04)
+      textoBoton.setScale(1.04)
 
     })
 
@@ -112,9 +125,22 @@ export default class IntroScene extends Phaser.Scene {
 
     })
 
+    // ---------- CLICK ----------
+
     boton.on('pointerdown', () => {
 
-      this.scene.start('MenuScene')
+      this.cameras.main.fadeOut(
+        200,
+        0,
+        0,
+        0
+      )
+
+      this.time.delayedCall(200, () => {
+
+        this.scene.start('MenuScene')
+
+      })
 
     })
 

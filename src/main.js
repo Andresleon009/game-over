@@ -21,6 +21,16 @@ const config = {
   width: 800,
   height: 600,
 
+  backgroundColor: '#0f172a',
+
+  scale: {
+
+    mode: Phaser.Scale.FIT,
+
+    autoCenter: Phaser.Scale.CENTER_BOTH
+
+  },
+
   scene: [
 
     IntroScene,
