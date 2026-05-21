@@ -24,6 +24,32 @@ const GAME_HEIGHT = 600
 /** Coordenada Y base del contenido principal en portrait (más arriba = menos vacío) */
 export const PORTRAIT_CONTENT_TOP = 76
 
+/** Separación entre el botón nav y el centro del título (px, coords. juego) */
+const NAV_TITLE_GAP = 20
+
+export function parseFontSize(size) {
+
+  return parseInt(String(size).replace('px', ''), 10) || 40
+
+}
+
+/**
+ * Y del título en portrait: siempre debajo del botón VOLVER/MENÚ, sin solapar.
+ */
+export function getPortraitTitleY(titleFontSize) {
+
+  if (!isMobilePortraitViewport()) {
+    return null
+  }
+
+  const nav = getBackButtonLayout()
+  const navBottom = nav.y + nav.height / 2
+  const titleHalf = Math.round(parseFontSize(titleFontSize) * 0.52)
+
+  return Math.round(navBottom + NAV_TITLE_GAP + titleHalf)
+
+}
+
 /**
  * Posición del botón VOLVER en portrait + ENVELOP.
  * Se ancla al borde izquierdo visible del canvas (no al centro del juego).
@@ -47,7 +73,7 @@ export function getBackButtonLayout() {
 
   return {
     x: Math.round(visibleLeft + 8),
-    y: 36,
+    y: 32,
     originX: 0,
     width: 106,
     height: 40

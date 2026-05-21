@@ -1,4 +1,4 @@
-import { PORTRAIT_CONTENT_TOP } from './responsiveScale'
+import { getPortraitTitleY, PORTRAIT_CONTENT_TOP } from './responsiveScale'
 import {
   isPortraitMobile,
   isTightViewport,
@@ -19,7 +19,9 @@ export function getClosingLayout(scene) {
     portrait,
     tight,
 
-    titleY: portrait ? 76 : tight ? 82 : 100,
+    titleY: portrait
+      ? (getPortraitTitleY('36px') ?? 88)
+      : tight ? 82 : 100,
     titleFontSize: portrait ? '36px' : tight ? '34px' : '40px',
 
     panelY: portrait

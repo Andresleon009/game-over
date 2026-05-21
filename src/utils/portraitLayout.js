@@ -5,6 +5,8 @@
 
 import {
   isMobilePortraitViewport,
+  getPortraitTitleY,
+  parseFontSize,
   PORTRAIT_CONTENT_TOP
 } from './responsiveScale'
 
@@ -109,19 +111,27 @@ export function getStackSceneLayout(scene, desktop) {
     }
   }
 
+  const titleFontSize = desktop.titleFontSizePortrait ?? desktop.titleFontSize
+  const subtitleFontSize = desktop.subtitleFontSizePortrait ?? desktop.subtitleFontSize
+  const titleY = getPortraitTitleY(titleFontSize)
+    ?? desktop.titleYPortrait
+    ?? 90
+  const subtitleY = desktop.subtitleYPortrait
+    ?? titleY + Math.round(parseFontSize(titleFontSize) * 0.5) + 16
+
   return {
     portrait: true,
     centerX,
-    titleY: desktop.titleYPortrait ?? 64,
-    subtitleY: desktop.subtitleYPortrait ?? 104,
+    titleY,
+    subtitleY,
     buttonYs: spreadButtonYs(
       true,
       desktop.buttonYs,
-      desktop.buttonAreaTop ?? 188,
+      Math.max(subtitleY + 36, desktop.buttonAreaTop ?? 200),
       desktop.buttonAreaBottom ?? 528
     ),
-    titleFontSize: desktop.titleFontSizePortrait ?? desktop.titleFontSize,
-    subtitleFontSize: desktop.subtitleFontSizePortrait ?? desktop.subtitleFontSize,
+    titleFontSize,
+    subtitleFontSize,
     buttonFontSize: desktop.buttonFontSizePortrait ?? desktop.buttonFontSize,
     buttonW: desktop.buttonWPortrait ?? desktop.buttonW,
     buttonH: desktop.buttonHPortrait ?? desktop.buttonH
@@ -196,11 +206,13 @@ export function getAudioSceneLayout(scene) {
     }
   }
 
+  const titleY = getPortraitTitleY('34px') ?? 70
+
   return {
     portrait: true,
     centerX,
-    titleY: 70,
-    bodyY: 140,
+    titleY,
+    bodyY: titleY + 58,
     panelY: 336,
     panelH: 275,
     vizY: 290,
@@ -228,10 +240,12 @@ export function getQuestionsSceneLayout(scene) {
     }
   }
 
+  const titleY = getPortraitTitleY('36px') ?? 66
+
   return {
     portrait: true,
     centerX,
-    titleY: 66,
+    titleY,
     panelY: 303,
     panelW: 680,
     panelH: 400,
