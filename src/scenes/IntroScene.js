@@ -1,5 +1,7 @@
 import Phaser from 'phaser'
 
+import { isPortraitMobile, getCenterX } from '../utils/portraitLayout'
+
 export default class IntroScene extends Phaser.Scene {
 
   constructor() {
@@ -16,6 +18,13 @@ export default class IntroScene extends Phaser.Scene {
   }
 
   create() {
+
+    const portrait = isPortraitMobile(this)
+    const centerX = getCenterX(this)
+    const logoY = portrait ? 155 : 180
+    const titleY = portrait ? 288 : 320
+    const subtitleY = portrait ? 365 : 390
+    const buttonY = portrait ? 530 : 520
 
     // ---------- FONDO ----------
 
@@ -51,19 +60,19 @@ export default class IntroScene extends Phaser.Scene {
     // ---------- LOGO GRANDE ----------
 
     this.add.image(
-      400,
-      180,
+      centerX,
+      logoY,
       'logo'
-    ).setScale(0.25)
+    ).setScale(portrait ? 0.22 : 0.25)
 
     // ---------- TÍTULO ----------
 
     this.add.text(
-      400,
-      320,
+      centerX,
+      titleY,
       'GAME OVER',
       {
-        fontSize: '52px',
+        fontSize: portrait ? '46px' : '52px',
         fontStyle: 'bold',
         color: '#f8fafc'
       }
@@ -72,11 +81,11 @@ export default class IntroScene extends Phaser.Scene {
     // ---------- SUBTÍTULO ----------
 
     this.add.text(
-      400,
-      390,
+      centerX,
+      subtitleY,
       'Prevención de violencia\ny reflexión crítica',
       {
-        fontSize: '28px',
+        fontSize: portrait ? '25px' : '28px',
         color: '#cbd5e1',
         align: 'center',
         lineSpacing: 10
@@ -86,10 +95,10 @@ export default class IntroScene extends Phaser.Scene {
     // ---------- BOTÓN ----------
 
     const boton = this.add.rectangle(
-      400,
-      520,
-      280,
-      80,
+      centerX,
+      buttonY,
+      portrait ? 260 : 280,
+      portrait ? 72 : 80,
       0x7c3aed
     ).setInteractive()
 
@@ -99,11 +108,11 @@ export default class IntroScene extends Phaser.Scene {
     )
 
     const textoBoton = this.add.text(
-      400,
-      520,
+      centerX,
+      buttonY,
       'INGRESAR',
       {
-        fontSize: '30px',
+        fontSize: portrait ? '27px' : '30px',
         fontStyle: 'bold',
         color: '#ffffff'
       }

@@ -1,6 +1,8 @@
 import Phaser from 'phaser'
 
 import createBackButton from '../utils/createBackButton'
+import { getStackSceneLayout } from '../utils/portraitLayout'
+
 export default class Session4Scene extends Phaser.Scene {
 
   constructor() {
@@ -11,6 +13,19 @@ export default class Session4Scene extends Phaser.Scene {
 
     this.cameras.main.setBackgroundColor('#0f172a')
 
+    const layout = getStackSceneLayout(this, {
+      titleY: 90,
+      subtitleY: 145,
+      buttonYs: [250, 370, 490],
+      titleFontSize: '46px',
+      subtitleFontSize: '24px',
+      buttonFontSize: '28px',
+      buttonW: 500,
+      buttonH: 90,
+      buttonAreaTop: 230,
+      buttonAreaBottom: 510
+    })
+
     createBackButton(
       this,
       'MenuScene',
@@ -19,11 +34,11 @@ export default class Session4Scene extends Phaser.Scene {
 
     // TÍTULO
     this.add.text(
-      400,
-      90,
+      layout.centerX,
+      layout.titleY,
       'Sesión 4',
       {
-        fontSize: '46px',
+        fontSize: layout.titleFontSize,
         color: '#f8fafc',
         fontStyle: 'bold'
       }
@@ -31,11 +46,11 @@ export default class Session4Scene extends Phaser.Scene {
 
     // SUBTÍTULO
     this.add.text(
-      400,
-      145,
+      layout.centerX,
+      layout.subtitleY,
       'Juntas y juntos paremos la violencia',
       {
-        fontSize: '24px',
+        fontSize: layout.subtitleFontSize,
         color: '#cbd5e1',
         align: 'center'
       }
@@ -43,37 +58,40 @@ export default class Session4Scene extends Phaser.Scene {
 
     // ACTIVIDAD 1
     this.createButton(
-      400,
-      250,
+      layout.centerX,
+      layout.buttonYs[0],
       '🧠 Memory conceptual',
-      0x06b6d4
+      0x06b6d4,
+      layout
     )
 
     // ACTIVIDAD 2
     this.createButton(
-      400,
-      370,
+      layout.centerX,
+      layout.buttonYs[1],
       '🏆 Premiación',
-      0x7c3aed
+      0x7c3aed,
+      layout
     )
 
     // ACTIVIDAD 3
     this.createButton(
-      400,
-      490,
+      layout.centerX,
+      layout.buttonYs[2],
       '✨ Cierre final',
-      0x10b981
+      0x10b981,
+      layout
     )
 
   }
 
-  createButton(x, y, text, color) {
+  createButton(x, y, text, color, layout) {
 
     const button = this.add.rectangle(
       x,
       y,
-      500,
-      90,
+      layout.buttonW,
+      layout.buttonH,
       color
     ).setInteractive()
 
@@ -87,7 +105,7 @@ export default class Session4Scene extends Phaser.Scene {
       y,
       text,
       {
-        fontSize: '28px',
+        fontSize: layout.buttonFontSize,
         color: '#ffffff',
         fontStyle: 'bold'
       }

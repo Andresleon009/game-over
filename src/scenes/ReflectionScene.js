@@ -1,6 +1,8 @@
 import Phaser from 'phaser'
 
 import createBackButton from '../utils/createBackButton'
+import { getFlowSceneLayout } from '../utils/portraitLayout'
+
 export default class ReflectionScene extends Phaser.Scene {
 
   constructor() {
@@ -8,6 +10,23 @@ export default class ReflectionScene extends Phaser.Scene {
   }
 
   create() {
+
+    const layout = getFlowSceneLayout(this, {
+      titleY: 120,
+      subtitleY: 210,
+      panelY: 340,
+      panelW: 520,
+      panelH: 140,
+      contentY: 340,
+      actionY: 500,
+      rangeMin: 120,
+      rangeMax: 500,
+      titleFontSize: '40px',
+      bodyFontSize: '28px',
+      actionFontSize: '26px',
+      buttonW: 260,
+      buttonH: 70
+    })
 
     // FONDO
     this.cameras.main.setBackgroundColor('#0f172a')
@@ -20,11 +39,11 @@ export default class ReflectionScene extends Phaser.Scene {
 
     // TÍTULO
     this.add.text(
-      400,
-      120,
+      layout.centerX,
+      layout.titleY,
       '💭 Primera impresión',
       {
-        fontSize: '40px',
+        fontSize: layout.titleFontSize,
         color: '#f8fafc',
         fontStyle: 'bold'
       }
@@ -32,21 +51,21 @@ export default class ReflectionScene extends Phaser.Scene {
 
     // PREGUNTA
     this.add.text(
-      400,
-      210,
+      layout.centerX,
+      layout.subtitleY,
       '¿Qué te hizo pensar esta canción?',
       {
-        fontSize: '28px',
+        fontSize: layout.bodyFontSize,
         color: '#cbd5e1'
       }
     ).setOrigin(0.5)
 
     // CAJA
     const inputBox = this.add.rectangle(
-      400,
-      340,
-      520,
-      140,
+      layout.centerX,
+      layout.panelY,
+      layout.panelW,
+      layout.panelH,
       0x1e293b,
       0.95
     )
@@ -58,21 +77,21 @@ export default class ReflectionScene extends Phaser.Scene {
 
     // TEXTO PLACEHOLDER
     this.add.text(
-      400,
-      340,
+      layout.centerX,
+      layout.contentY,
       'Escribe aquí tu reflexión...',
       {
-        fontSize: '24px',
+        fontSize: layout.portrait ? '22px' : '24px',
         color: '#94a3b8'
       }
     ).setOrigin(0.5)
 
     // BOTÓN CONTINUAR
     const continueButton = this.add.rectangle(
-      400,
-      500,
-      260,
-      70,
+      layout.centerX,
+      layout.actionY,
+      layout.buttonW,
+      layout.buttonH,
       0x7c3aed
     ).setInteractive()
 
@@ -82,11 +101,11 @@ export default class ReflectionScene extends Phaser.Scene {
     )
 
     const continueText = this.add.text(
-      400,
-      500,
+      layout.centerX,
+      layout.actionY,
       'CONTINUAR',
       {
-        fontSize: '26px',
+        fontSize: layout.actionFontSize,
         color: '#ffffff',
         fontStyle: 'bold'
       }

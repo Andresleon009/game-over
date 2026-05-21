@@ -1,6 +1,8 @@
 import Phaser from 'phaser'
 
 import createBackButton from '../utils/createBackButton'
+import { getAudioSceneLayout } from '../utils/portraitLayout'
+
 export default class AudioScene extends Phaser.Scene {
 
   constructor() {
@@ -33,6 +35,8 @@ export default class AudioScene extends Phaser.Scene {
 
     // ---------- BOTÓN VOLVER ----------
 
+    const layout = getAudioSceneLayout(this)
+
     createBackButton(
       this,
       'Session1Scene'
@@ -42,7 +46,7 @@ export default class AudioScene extends Phaser.Scene {
 
     this.add.circle(
       650,
-      120,
+      layout.portrait ? 100 : 120,
       180,
       0x06b6d4,
       0.10
@@ -51,11 +55,11 @@ export default class AudioScene extends Phaser.Scene {
     // ---------- TÍTULO ----------
 
     this.add.text(
-      400,
-      90,
+      layout.centerX,
+      layout.titleY,
       '🎧 Escucha con atención',
       {
-        fontSize: '38px',
+        fontSize: layout.portrait ? '34px' : '38px',
         color: '#f8fafc',
         fontStyle: 'bold'
       }
@@ -64,24 +68,24 @@ export default class AudioScene extends Phaser.Scene {
     // ---------- TEXTO ----------
 
     this.add.text(
-      400,
-      170,
+      layout.centerX,
+      layout.bodyY,
       'Escucha el fragmento musical\ny luego comparte tu primera impresión.',
       {
-        fontSize: '24px',
+        fontSize: layout.portrait ? '22px' : '24px',
         color: '#cbd5e1',
         align: 'center',
-        lineSpacing: 10
+        lineSpacing: layout.portrait ? 9 : 10
       }
     ).setOrigin(0.5)
 
     // ---------- PANEL ----------
 
     const audioPanel = this.add.rectangle(
-      400,
-      330,
-      620,
-      260,
+      layout.centerX,
+      layout.panelY,
+      layout.portrait ? 600 : 620,
+      layout.panelH,
       0x1e293b,
       0.95
     )
@@ -105,7 +109,7 @@ export default class AudioScene extends Phaser.Scene {
 
       const bar = this.add.rectangle(
         startX + (i * 20),
-        280,
+        layout.vizY,
         12,
         40,
         0x06b6d4
@@ -136,7 +140,7 @@ export default class AudioScene extends Phaser.Scene {
 
             bar.height = randomHeight
 
-            bar.y = 280 - (randomHeight / 2)
+            bar.y = layout.vizY - (randomHeight / 2)
 
           })
 
@@ -146,7 +150,7 @@ export default class AudioScene extends Phaser.Scene {
 
             bar.height = 40
 
-            bar.y = 280 - (40 / 2)
+            bar.y = layout.vizY - (40 / 2)
 
           })
 
@@ -160,9 +164,9 @@ export default class AudioScene extends Phaser.Scene {
 
     const playButton = this.add.rectangle(
       240,
-      360,
+      layout.controlsY,
       160,
-      70,
+      layout.portrait ? 64 : 70,
       0x06b6d4
     ).setInteractive()
 
@@ -173,7 +177,7 @@ export default class AudioScene extends Phaser.Scene {
 
     const playText = this.add.text(
       240,
-      360,
+      layout.controlsY,
       '▶ PLAY',
       {
         fontSize: '24px',
@@ -185,10 +189,10 @@ export default class AudioScene extends Phaser.Scene {
     // ---------- BOTÓN PAUSA ----------
 
     const pauseButton = this.add.rectangle(
-      400,
-      360,
+      layout.centerX,
+      layout.controlsY,
       160,
-      70,
+      layout.portrait ? 64 : 70,
       0x7c3aed
     ).setInteractive()
 
@@ -198,8 +202,8 @@ export default class AudioScene extends Phaser.Scene {
     )
 
     const pauseText = this.add.text(
-      400,
-      360,
+      layout.centerX,
+      layout.controlsY,
       '⏸ PAUSA',
       {
         fontSize: '24px',
@@ -212,9 +216,9 @@ export default class AudioScene extends Phaser.Scene {
 
     const replayButton = this.add.rectangle(
       560,
-      360,
+      layout.controlsY,
       160,
-      70,
+      layout.portrait ? 64 : 70,
       0xf59e0b
     ).setInteractive()
 
@@ -225,7 +229,7 @@ export default class AudioScene extends Phaser.Scene {
 
     const replayText = this.add.text(
       560,
-      360,
+      layout.controlsY,
       '↺ OTRA VEZ',
       {
         fontSize: '22px',
@@ -302,10 +306,10 @@ export default class AudioScene extends Phaser.Scene {
     // ---------- CONTINUAR ----------
 
     const continueButton = this.add.rectangle(
-      400,
-      520,
+      layout.centerX,
+      layout.continueY,
       260,
-      70,
+      layout.portrait ? 64 : 70,
       0x10b981
     ).setInteractive()
 
@@ -315,8 +319,8 @@ export default class AudioScene extends Phaser.Scene {
     )
 
     const continueText = this.add.text(
-      400,
-      520,
+      layout.centerX,
+      layout.continueY,
       'CONTINUAR',
       {
         fontSize: '26px',

@@ -1,6 +1,8 @@
 import Phaser from 'phaser'
 
 import createBackButton from '../utils/createBackButton'
+import { getStackSceneLayout } from '../utils/portraitLayout'
+
 export default class Session3Scene extends Phaser.Scene {
 
   constructor() {
@@ -11,6 +13,19 @@ export default class Session3Scene extends Phaser.Scene {
 
     this.cameras.main.setBackgroundColor('#0f172a')
 
+    const layout = getStackSceneLayout(this, {
+      titleY: 90,
+      subtitleY: 145,
+      buttonYs: [320, 460],
+      titleFontSize: '46px',
+      subtitleFontSize: '28px',
+      buttonFontSize: '28px',
+      buttonW: 500,
+      buttonH: 90,
+      buttonAreaTop: 280,
+      buttonAreaBottom: 510
+    })
+
     createBackButton(
       this,
       'MenuScene',
@@ -19,11 +34,11 @@ export default class Session3Scene extends Phaser.Scene {
 
     // TÍTULO
     this.add.text(
-      400,
-      90,
+      layout.centerX,
+      layout.titleY,
       'Sesión 3',
       {
-        fontSize: '46px',
+        fontSize: layout.titleFontSize,
         color: '#f8fafc',
         fontStyle: 'bold'
       }
@@ -31,40 +46,42 @@ export default class Session3Scene extends Phaser.Scene {
 
     // SUBTÍTULO
     this.add.text(
-      400,
-      145,
+      layout.centerX,
+      layout.subtitleY,
       '¡Ponte la camiseta!',
       {
-        fontSize: '28px',
+        fontSize: layout.subtitleFontSize,
         color: '#cbd5e1'
       }
     ).setOrigin(0.5)
 
     // ACTIVIDAD 1
     this.createButton(
-      400,
-      320,
+      layout.centerX,
+      layout.buttonYs[0],
       '🎭 Historias propias',
-      0x06b6d4
+      0x06b6d4,
+      layout
     )
 
     // ACTIVIDAD 2
     this.createButton(
-      400,
-      460,
+      layout.centerX,
+      layout.buttonYs[1],
       '🧩 Próximamente',
-      0xf59e0b
+      0xf59e0b,
+      layout
     )
 
   }
 
-  createButton(x, y, text, color) {
+  createButton(x, y, text, color, layout) {
 
     const button = this.add.rectangle(
       x,
       y,
-      500,
-      90,
+      layout.buttonW,
+      layout.buttonH,
       color
     ).setInteractive()
 
@@ -78,7 +95,7 @@ export default class Session3Scene extends Phaser.Scene {
       y,
       text,
       {
-        fontSize: '28px',
+        fontSize: layout.buttonFontSize,
         color: '#ffffff',
         fontStyle: 'bold'
       }

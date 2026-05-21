@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 
 import createBackButton from '../utils/createBackButton'
+import { getStackSceneLayout } from '../utils/portraitLayout'
 
 export default class Session1Scene extends Phaser.Scene {
 
@@ -12,6 +13,19 @@ export default class Session1Scene extends Phaser.Scene {
 
     this.cameras.main.setBackgroundColor('#0f172a')
 
+    const layout = getStackSceneLayout(this, {
+      titleY: 90,
+      subtitleY: 145,
+      buttonYs: [270, 390, 510],
+      titleFontSize: '46px',
+      subtitleFontSize: '28px',
+      buttonFontSize: '28px',
+      buttonW: 500,
+      buttonH: 90,
+      buttonAreaTop: 235,
+      buttonAreaBottom: 515
+    })
+
     createBackButton(
       this,
       'MenuScene',
@@ -20,11 +34,11 @@ export default class Session1Scene extends Phaser.Scene {
 
     // TÍTULO
     this.add.text(
-      400,
-      90,
+      layout.centerX,
+      layout.titleY,
       'Sesión 1',
       {
-        fontSize: '46px',
+        fontSize: layout.titleFontSize,
         color: '#f8fafc',
         fontStyle: 'bold'
       }
@@ -32,11 +46,11 @@ export default class Session1Scene extends Phaser.Scene {
 
     // SUBTÍTULO
     this.add.text(
-      400,
-      145,
+      layout.centerX,
+      layout.subtitleY,
       'Diferentes pero iguales',
       {
-        fontSize: '28px',
+        fontSize: layout.subtitleFontSize,
         color: '#cbd5e1'
       }
     ).setOrigin(0.5)
@@ -44,10 +58,13 @@ export default class Session1Scene extends Phaser.Scene {
     // ---------- ACTIVIDAD 1 ----------
 
     const actividad1 = this.createButton(
-      400,
-      270,
+      layout.centerX,
+      layout.buttonYs[0],
       '🎵 Detrás de la letra',
-      0x06b6d4
+      0x06b6d4,
+      layout.buttonW,
+      layout.buttonH,
+      layout.buttonFontSize
     )
 
     actividad1.on('pointerdown', () => {
@@ -59,10 +76,13 @@ export default class Session1Scene extends Phaser.Scene {
     // ---------- ACTIVIDAD 2 ----------
 
     const actividad2 = this.createButton(
-      400,
-      390,
+      layout.centerX,
+      layout.buttonYs[1],
       '💭 El sueño increíble',
-      0x7c3aed
+      0x7c3aed,
+      layout.buttonW,
+      layout.buttonH,
+      layout.buttonFontSize
     )
 
     actividad2.on('pointerdown', () => {
@@ -74,10 +94,13 @@ export default class Session1Scene extends Phaser.Scene {
     // ---------- ACTIVIDAD 3 ----------
 
     const actividad3 = this.createButton(
-      400,
-      510,
+      layout.centerX,
+      layout.buttonYs[2],
       '🧩 Actividad futura',
-      0xf59e0b
+      0xf59e0b,
+      layout.buttonW,
+      layout.buttonH,
+      layout.buttonFontSize
     )
 
     actividad3.on('pointerdown', () => {
@@ -88,13 +111,13 @@ export default class Session1Scene extends Phaser.Scene {
 
   }
 
-  createButton(x, y, text, color) {
+  createButton(x, y, text, color, width, height, fontSize) {
 
     const button = this.add.rectangle(
       x,
       y,
-      500,
-      90,
+      width,
+      height,
       color
     ).setInteractive()
 
@@ -108,7 +131,7 @@ export default class Session1Scene extends Phaser.Scene {
       y,
       text,
       {
-        fontSize: '28px',
+        fontSize,
         color: '#ffffff',
         fontStyle: 'bold'
       }

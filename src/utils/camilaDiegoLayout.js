@@ -1,150 +1,159 @@
 /**
  * Layout compartido para escenas Camila y Diego.
- * Ajusta tamaños y posiciones dentro del canvas 800×600
- * para evitar solapamientos en pantallas pequeñas.
+ * Ajusta tamaños y posiciones dentro del canvas 800×600.
+ * En portrait móvil redistribuye verticalmente; desktop casi igual.
  */
 
-function isCompactView(scene) {
-
-  const display = scene.scale.displaySize
-
-  if (!display) {
-    return false
-  }
-
-  const portrait = display.height > display.width
-  const shortViewport = display.height < 520
-
-  return portrait || shortViewport
-
-}
+import {
+  isPortraitMobile,
+  isTightViewport,
+  spreadY
+} from './portraitLayout'
 
 export function getCamilaDiegoLayout(scene) {
 
-  const width = scene.cameras.main.width || BASE_WIDTH
-  const height = scene.cameras.main.height || BASE_HEIGHT
-  const compact = isCompactView(scene)
+  const width = scene.cameras.main.width || 800
+  const portrait = isPortraitMobile(scene)
+  const tight = isTightViewport(scene)
 
-  const marginX = compact ? 28 : 40
+  const marginX = portrait ? 28 : tight ? 32 : 40
   const contentWidth = width - marginX * 2
-  const wordWrapWidth = Math.min(compact ? 520 : 580, contentWidth - 24)
+  const wordWrapWidth = Math.min(
+    portrait ? 540 : tight ? 520 : 580,
+    contentWidth - 24
+  )
 
   return {
     centerX: width / 2,
-    compact,
+    portrait,
+    tight,
     marginX,
     contentWidth,
     wordWrapWidth,
 
-    titleY: compact ? 54 : 68,
-    titleFontSize: compact ? '32px' : '42px',
+    titleY: portrait ? 76 : tight ? 54 : 68,
+    titleFontSize: portrait ? '34px' : tight ? '32px' : '42px',
 
-    bodyFontSize: compact ? '22px' : '28px',
-    bodyLineSpacing: compact ? 8 : 12,
+    bodyFontSize: portrait ? '23px' : tight ? '22px' : '28px',
+    bodyLineSpacing: portrait ? 10 : tight ? 8 : 12,
 
     panelStroke: 0x334155,
 
-    buttonFontSize: compact ? '22px' : '28px',
-    buttonHeight: compact ? 58 : 70
+    buttonFontSize: portrait ? '24px' : tight ? '22px' : '28px',
+    buttonHeight: portrait ? 62 : tight ? 58 : 70
   }
+
+}
+
+function spreadContent(y, portrait, fromMin, fromMax) {
+
+  return spreadY(y, portrait, fromMin, fromMax, 92, 568)
 
 }
 
 export function getIntroLayout(layout) {
 
-  const { compact, centerX } = layout
+  const { portrait, tight } = layout
+  const fromMin = 258
+  const fromMax = 512
 
   return {
     ...layout,
-    panelY: compact ? 298 : 308,
-    panelW: compact ? 680 : 700,
-    panelH: compact ? 360 : 400,
-    textY: compact ? 248 : 258,
-    continueY: compact ? 498 : 512,
-    continueW: compact ? 240 : 260
+    panelY: portrait ? 310 : tight ? 298 : 308,
+    panelW: portrait ? 700 : tight ? 680 : 700,
+    panelH: portrait ? 370 : tight ? 360 : 400,
+    textY: spreadContent(258, portrait, fromMin, fromMax),
+    continueY: spreadContent(512, portrait, fromMin, fromMax),
+    continueW: portrait ? 250 : tight ? 240 : 260
   }
 
 }
 
 export function getGroupsLayout(layout) {
 
-  const { compact, centerX } = layout
+  const { portrait, tight, centerX } = layout
+  const fromMin = 68
+  const fromMax = 528
 
   return {
     ...layout,
-    titleFontSize: compact ? '30px' : '40px',
-    bodyFontSize: compact ? '20px' : '26px',
-    bodyLineSpacing: compact ? 7 : 10,
+    titleFontSize: portrait ? '32px' : tight ? '30px' : '40px',
+    bodyFontSize: portrait ? '21px' : tight ? '20px' : '26px',
+    bodyLineSpacing: portrait ? 9 : tight ? 7 : 10,
 
-    panelY: compact ? 292 : 302,
-    panelW: compact ? 680 : 720,
-    panelH: compact ? 390 : 420,
+    panelY: portrait ? 305 : tight ? 292 : 302,
+    panelW: portrait ? 700 : tight ? 680 : 720,
+    panelH: portrait ? 400 : tight ? 390 : 420,
 
-    instructionsY: compact ? 178 : 198,
-    timeLabelY: compact ? 318 : 338,
-    timeLabelFontSize: compact ? '20px' : '24px',
+    instructionsY: spreadContent(198, portrait, fromMin, fromMax),
+    timeLabelY: spreadContent(338, portrait, fromMin, fromMax),
+    timeLabelFontSize: portrait ? '22px' : tight ? '20px' : '24px',
 
-    timerButtonY: compact ? 368 : 388,
-    timerButtonW: compact ? 100 : 110,
-    timerButtonH: compact ? 44 : 50,
-    timerButtonFontSize: compact ? '18px' : '22px',
-    timerButtonXs: compact
+    timerButtonY: spreadContent(388, portrait, fromMin, fromMax),
+    timerButtonW: portrait ? 105 : tight ? 100 : 110,
+    timerButtonH: portrait ? 46 : tight ? 44 : 50,
+    timerButtonFontSize: portrait ? '19px' : tight ? '18px' : '22px',
+    timerButtonXs: portrait || tight
       ? [centerX - 130, centerX, centerX + 130]
       : [270, 400, 530],
 
-    timerTextY: compact ? 428 : 448,
-    timerTextFontSize: compact ? '36px' : '44px',
+    timerTextY: spreadContent(448, portrait, fromMin, fromMax),
+    timerTextFontSize: portrait ? '38px' : tight ? '36px' : '44px',
 
-    storyButtonY: compact ? 508 : 528,
-    storyButtonW: compact ? 280 : 300,
-    storyButtonH: compact ? 58 : 65,
-    storyButtonFontSize: compact ? '22px' : '26px'
+    storyButtonY: spreadContent(528, portrait, fromMin, fromMax),
+    storyButtonW: portrait ? 285 : tight ? 280 : 300,
+    storyButtonH: portrait ? 60 : tight ? 58 : 65,
+    storyButtonFontSize: portrait ? '23px' : tight ? '22px' : '26px'
   }
 
 }
 
 export function getVideoLayout(layout) {
 
-  const { compact } = layout
+  const { portrait, tight } = layout
+  const fromMin = 72
+  const fromMax = 518
 
   return {
     ...layout,
-    titleY: compact ? 56 : 72,
+    titleY: portrait ? 78 : tight ? 56 : 72,
 
-    panelY: compact ? 268 : 278,
-    panelW: compact ? 680 : 700,
-    panelH: compact ? 300 : 320,
+    panelY: spreadContent(278, portrait, fromMin, fromMax),
+    panelW: portrait ? 700 : tight ? 680 : 700,
+    panelH: portrait ? 310 : tight ? 300 : 320,
 
-    textY: compact ? 218 : 228,
+    textY: spreadContent(228, portrait, fromMin, fromMax),
 
-    videoButtonY: compact ? 358 : 372,
-    videoButtonW: compact ? 290 : 320,
-    videoButtonH: compact ? 68 : 80,
-    videoButtonFontSize: compact ? '24px' : '30px',
+    videoButtonY: spreadContent(372, portrait, fromMin, fromMax),
+    videoButtonW: portrait ? 300 : tight ? 290 : 320,
+    videoButtonH: portrait ? 72 : tight ? 68 : 80,
+    videoButtonFontSize: portrait ? '26px' : tight ? '24px' : '30px',
 
-    continueY: compact ? 498 : 518,
-    continueW: compact ? 260 : 280
+    continueY: spreadContent(518, portrait, fromMin, fromMax),
+    continueW: portrait ? 265 : tight ? 260 : 280
   }
 
 }
 
 export function getReflectionLayout(layout) {
 
-  const { compact } = layout
+  const { portrait, tight } = layout
+  const fromMin = 68
+  const fromMax = 528
 
   return {
     ...layout,
-    bodyFontSize: compact ? '20px' : '27px',
-    bodyLineSpacing: compact ? 9 : 14,
+    bodyFontSize: portrait ? '21px' : tight ? '20px' : '27px',
+    bodyLineSpacing: portrait ? 10 : tight ? 9 : 14,
 
-    panelY: compact ? 302 : 312,
-    panelW: compact ? 680 : 720,
-    panelH: compact ? 380 : 410,
+    panelY: spreadContent(312, portrait, fromMin, fromMax),
+    panelW: portrait ? 700 : tight ? 680 : 720,
+    panelH: portrait ? 390 : tight ? 380 : 410,
 
-    questionsY: compact ? 268 : 282,
+    questionsY: spreadContent(282, portrait, fromMin, fromMax),
 
-    finishY: compact ? 512 : 528,
-    finishW: compact ? 240 : 260
+    finishY: spreadContent(528, portrait, fromMin, fromMax),
+    finishW: portrait ? 250 : tight ? 240 : 260
   }
 
 }

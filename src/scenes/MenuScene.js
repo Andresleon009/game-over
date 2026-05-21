@@ -1,5 +1,7 @@
 import Phaser from 'phaser'
 
+import { getStackSceneLayout } from '../utils/portraitLayout'
+
 export default class MenuScene extends Phaser.Scene {
 
   constructor() {
@@ -7,6 +9,19 @@ export default class MenuScene extends Phaser.Scene {
   }
 
   create() {
+
+    const layout = getStackSceneLayout(this, {
+      titleY: 90,
+      subtitleY: 145,
+      buttonYs: [240, 350, 460, 570],
+      titleFontSize: '52px',
+      subtitleFontSize: '24px',
+      buttonFontSize: '24px',
+      buttonW: 520,
+      buttonH: 85,
+      buttonAreaTop: 215,
+      buttonAreaBottom: 520
+    })
 
     // ---------- FONDO ----------
 
@@ -16,7 +31,7 @@ export default class MenuScene extends Phaser.Scene {
 
     this.add.circle(
       120,
-      100,
+      layout.portrait ? 90 : 100,
       180,
       0x7c3aed,
       0.10
@@ -24,7 +39,7 @@ export default class MenuScene extends Phaser.Scene {
 
     this.add.circle(
       700,
-      520,
+      layout.portrait ? 500 : 520,
       220,
       0x06b6d4,
       0.08
@@ -33,11 +48,11 @@ export default class MenuScene extends Phaser.Scene {
     // ---------- TÍTULO ----------
 
     this.add.text(
-      400,
-      90,
+      layout.centerX,
+      layout.titleY,
       'GAME OVER',
       {
-        fontSize: '52px',
+        fontSize: layout.titleFontSize,
         fontStyle: 'bold',
         color: '#f8fafc'
       }
@@ -46,84 +61,57 @@ export default class MenuScene extends Phaser.Scene {
     // ---------- SUBTÍTULO ----------
 
     this.add.text(
-      400,
-      145,
+      layout.centerX,
+      layout.subtitleY,
       'Selecciona una sesión',
       {
-        fontSize: '24px',
+        fontSize: layout.subtitleFontSize,
         color: '#cbd5e1'
       }
     ).setOrigin(0.5)
 
-    // ---------- SESIÓN 1 ----------
+    // ---------- SESIONES ----------
 
-    const sesion1 = this.createButton(
-      400,
-      240,
-      'Sesión 1\nDiferentes pero iguales',
-      0x06b6d4
-    )
+    const sessions = [
+      { label: 'Sesión 1\nDiferentes pero iguales', color: 0x06b6d4, scene: 'Session1Scene' },
+      { label: 'Sesión 2\nLa violencia se pinta de amor', color: 0x7c3aed, scene: 'Session2Scene' },
+      { label: 'Sesión 3\n¡Ponte la camiseta!', color: 0xf59e0b, scene: null },
+      { label: 'Sesión 4\nJuntas y juntos paremos la violencia', color: 0x10b981, scene: null }
+    ]
 
-    sesion1.on('pointerdown', () => {
+    sessions.forEach((session, index) => {
 
-      this.scene.start('Session1Scene')
+      const button = this.createButton(
+        layout.centerX,
+        layout.buttonYs[index],
+        session.label,
+        session.color,
+        layout.buttonW,
+        layout.buttonH,
+        layout.buttonFontSize
+      )
 
-    })
+      button.on('pointerdown', () => {
 
-    // ---------- SESIÓN 2 ----------
+        if (session.scene) {
+          this.scene.start(session.scene)
+        } else {
+          alert('Próximamente')
+        }
 
-    const sesion2 = this.createButton(
-      400,
-      350,
-      'Sesión 2\nLa violencia se pinta de amor',
-      0x7c3aed
-    )
-
-    sesion2.on('pointerdown', () => {
-
-      this.scene.start('Session2Scene')
-
-    })
-
-    // ---------- SESIÓN 3 ----------
-
-    const sesion3 = this.createButton(
-      400,
-      460,
-      'Sesión 3\n¡Ponte la camiseta!',
-      0xf59e0b
-    )
-
-    sesion3.on('pointerdown', () => {
-
-      alert('Próximamente')
-
-    })
-
-    // ---------- SESIÓN 4 ----------
-
-    const sesion4 = this.createButton(
-      400,
-      570,
-      'Sesión 4\nJuntas y juntos paremos la violencia',
-      0x10b981
-    )
-
-    sesion4.on('pointerdown', () => {
-
-      alert('Próximamente')
+      })
 
     })
 
   }
 
-  createButton(x, y, text, color) {
+  createButton(x, y, text, color, width, height, fontSize) {
 
     const button = this.add.rectangle(
       x,
       y,
-      520,
-      85,
+      width,
+      height,
       color
     ).setInteractive()
 
@@ -137,7 +125,7 @@ export default class MenuScene extends Phaser.Scene {
       y,
       text,
       {
-        fontSize: '24px',
+        fontSize,
         align: 'center',
         color: '#ffffff',
         fontStyle: 'bold'

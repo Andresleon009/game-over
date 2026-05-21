@@ -1,6 +1,8 @@
 import Phaser from 'phaser'
 
 import createBackButton from '../utils/createBackButton'
+import { getQuestionsSceneLayout } from '../utils/portraitLayout'
+
 export default class QuestionsScene extends Phaser.Scene {
 
   constructor() {
@@ -8,6 +10,14 @@ export default class QuestionsScene extends Phaser.Scene {
   }
 
   create() {
+
+    const layout = getQuestionsSceneLayout(this)
+
+    const questions = [
+      '1. ¿De qué habla la frase?',
+      '2. ¿Qué piensas sobre el contenido de la frase?',
+      '3. ¿Crees que estas canciones pueden influir en cómo vemos o tratamos a otras personas?'
+    ]
 
     // FONDO
     this.cameras.main.setBackgroundColor('#0f172a')
@@ -20,11 +30,11 @@ export default class QuestionsScene extends Phaser.Scene {
 
     // TÍTULO
     this.add.text(
-      400,
-      70,
+      layout.centerX,
+      layout.titleY,
       '🧠 Reflexionemos',
       {
-        fontSize: '40px',
+        fontSize: layout.portrait ? '36px' : '40px',
         color: '#f8fafc',
         fontStyle: 'bold'
       }
@@ -32,10 +42,10 @@ export default class QuestionsScene extends Phaser.Scene {
 
     // PANEL
     const panel = this.add.rectangle(
-      400,
-      300,
-      700,
-      390,
+      layout.centerX,
+      layout.panelY,
+      layout.panelW,
+      layout.panelH,
       0x1e293b,
       0.95
     )
@@ -45,54 +55,33 @@ export default class QuestionsScene extends Phaser.Scene {
       0x334155
     )
 
-    // PREGUNTA 1
-    this.add.text(
-      90,
-      140,
-      '1. ¿De qué habla la frase?',
-      {
-        fontSize: '26px',
-        color: '#f8fafc',
-        wordWrap: {
-          width: 620
-        }
-      }
-    )
+    // PREGUNTAS
+    const questionX = layout.portrait ? 100 : 90
+    const wrapWidth = layout.portrait ? 580 : 620
 
-    // PREGUNTA 2
-    this.add.text(
-      90,
-      240,
-      '2. ¿Qué piensas sobre el contenido de la frase?',
-      {
-        fontSize: '26px',
-        color: '#f8fafc',
-        wordWrap: {
-          width: 620
-        }
-      }
-    )
+    questions.forEach((question, index) => {
 
-    // PREGUNTA 3
-    this.add.text(
-      90,
-      340,
-      '3. ¿Crees que estas canciones pueden influir en cómo vemos o tratamos a otras personas?',
-      {
-        fontSize: '26px',
-        color: '#f8fafc',
-        wordWrap: {
-          width: 620
+      this.add.text(
+        questionX,
+        layout.questionYs[index],
+        question,
+        {
+          fontSize: layout.portrait ? '23px' : '26px',
+          color: '#f8fafc',
+          wordWrap: {
+            width: wrapWidth
+          }
         }
-      }
-    )
+      )
+
+    })
 
     // BOTÓN CONTINUAR
     const continueButton = this.add.rectangle(
-      400,
-      530,
+      layout.centerX,
+      layout.actionY,
       260,
-      70,
+      layout.portrait ? 64 : 70,
       0x06b6d4
     ).setInteractive()
 
@@ -102,11 +91,11 @@ export default class QuestionsScene extends Phaser.Scene {
     )
 
     const continueText = this.add.text(
-      400,
-      530,
+      layout.centerX,
+      layout.actionY,
       'CONTINUAR',
       {
-        fontSize: '26px',
+        fontSize: layout.portrait ? '24px' : '26px',
         color: '#ffffff',
         fontStyle: 'bold'
       }

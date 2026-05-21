@@ -1,44 +1,45 @@
-function isCompactView(scene) {
-
-  const display = scene.scale.displaySize
-
-  if (!display) {
-    return false
-  }
-
-  const portrait = display.height > display.width
-  const shortViewport = display.height < 520
-
-  return portrait || shortViewport
-
-}
+import {
+  isPortraitMobile,
+  isTightViewport,
+  spreadY
+} from './portraitLayout'
 
 export function getClosingLayout(scene) {
 
   const width = scene.cameras.main.width
   const centerX = width / 2
-  const compact = isCompactView(scene)
+  const portrait = isPortraitMobile(scene)
+  const tight = isTightViewport(scene)
+  const fromMin = 100
+  const fromMax = 518
 
   return {
     centerX,
-    compact,
+    portrait,
+    tight,
 
-    titleY: compact ? 82 : 100,
-    titleFontSize: compact ? '34px' : '40px',
+    titleY: portrait ? 88 : tight ? 82 : 100,
+    titleFontSize: portrait ? '36px' : tight ? '34px' : '40px',
 
-    panelY: compact ? 285 : 295,
-    panelW: compact ? 620 : 650,
-    panelH: compact ? 310 : 330,
+    panelY: portrait
+      ? spreadY(295, true, fromMin, fromMax, 92, 568)
+      : tight ? 285 : 295,
+    panelW: portrait ? 640 : tight ? 620 : 650,
+    panelH: portrait ? 320 : tight ? 310 : 330,
 
-    textY: compact ? 258 : 272,
-    bodyFontSize: compact ? '22px' : '26px',
-    bodyLineSpacing: compact ? 9 : 12,
-    wordWrapWidth: compact ? 500 : 540,
+    textY: portrait
+      ? spreadY(272, true, fromMin, fromMax, 92, 568)
+      : tight ? 265 : 272,
+    bodyFontSize: portrait ? '24px' : tight ? '22px' : '26px',
+    bodyLineSpacing: portrait ? 11 : tight ? 9 : 12,
+    wordWrapWidth: portrait ? 520 : tight ? 500 : 540,
 
-    finishY: compact ? 500 : 518,
-    finishW: compact ? 240 : 260,
-    buttonHeight: compact ? 58 : 68,
-    buttonFontSize: compact ? '24px' : '28px'
+    finishY: portrait
+      ? spreadY(518, true, fromMin, fromMax, 92, 568)
+      : tight ? 508 : 518,
+    finishW: portrait ? 250 : tight ? 240 : 260,
+    buttonHeight: portrait ? 62 : tight ? 58 : 68,
+    buttonFontSize: portrait ? '26px' : tight ? '24px' : '28px'
   }
 
 }

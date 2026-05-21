@@ -1,6 +1,8 @@
 import Phaser from 'phaser'
 
 import createBackButton from '../utils/createBackButton'
+import { getFlowSceneLayout } from '../utils/portraitLayout'
+
 export default class LyricScene extends Phaser.Scene {
 
   constructor() {
@@ -8,6 +10,23 @@ export default class LyricScene extends Phaser.Scene {
   }
 
   create() {
+
+    const layout = getFlowSceneLayout(this, {
+      titleY: 100,
+      panelY: 300,
+      panelW: 620,
+      panelH: 260,
+      contentY: 300,
+      actionY: 520,
+      rangeMin: 100,
+      rangeMax: 520,
+      titleFontSize: '38px',
+      bodyFontSize: '30px',
+      actionFontSize: '26px',
+      buttonW: 260,
+      buttonH: 70,
+      panelHPortrait: 280
+    })
 
     // FONDO
     this.cameras.main.setBackgroundColor('#0f172a')
@@ -20,11 +39,11 @@ export default class LyricScene extends Phaser.Scene {
 
     // TÍTULO
     this.add.text(
-      400,
-      100,
+      layout.centerX,
+      layout.titleY,
       '🎵 Fragmento de la canción',
       {
-        fontSize: '38px',
+        fontSize: layout.titleFontSize,
         color: '#f8fafc',
         fontStyle: 'bold'
       }
@@ -32,10 +51,10 @@ export default class LyricScene extends Phaser.Scene {
 
     // PANEL FRASE
     const lyricPanel = this.add.rectangle(
-      400,
-      300,
-      620,
-      260,
+      layout.centerX,
+      layout.panelY,
+      layout.panelW,
+      layout.panelH,
       0x1e293b,
       0.95
     )
@@ -47,26 +66,26 @@ export default class LyricScene extends Phaser.Scene {
 
     // LETRA
     this.add.text(
-      400,
-      300,
+      layout.centerX,
+      layout.contentY,
       '“Quien busca una mujer cara bonita mucha plata debe tener para mantener mujer bonita”\n\n(Kjarkas)',
       {
-        fontSize: '30px',
+        fontSize: layout.bodyFontSize,
         color: '#f8fafc',
         align: 'center',
-        lineSpacing: 16,
+        lineSpacing: layout.portrait ? 13 : 16,
         wordWrap: {
-          width: 520
+          width: layout.portrait ? 500 : 520
         }
       }
     ).setOrigin(0.5)
 
     // BOTÓN REFLEXIONAR
     const nextButton = this.add.rectangle(
-      400,
-      520,
-      260,
-      70,
+      layout.centerX,
+      layout.actionY,
+      layout.buttonW,
+      layout.buttonH,
       0x06b6d4
     ).setInteractive()
 
@@ -76,11 +95,11 @@ export default class LyricScene extends Phaser.Scene {
     )
 
     const nextText = this.add.text(
-      400,
-      520,
+      layout.centerX,
+      layout.actionY,
       'REFLEXIONAR',
       {
-        fontSize: '26px',
+        fontSize: layout.actionFontSize,
         color: '#ffffff',
         fontStyle: 'bold'
       }
@@ -101,7 +120,7 @@ export default class LyricScene extends Phaser.Scene {
 
     })
 
-    // CLICK
+    // CONTINUAR
     nextButton.on('pointerdown', () => {
 
       this.scene.start('QuestionsScene')
