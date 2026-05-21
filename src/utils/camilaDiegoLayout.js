@@ -4,6 +4,7 @@
  * En portrait móvil redistribuye verticalmente; desktop casi igual.
  */
 
+import { PORTRAIT_CONTENT_TOP } from './responsiveScale'
 import {
   isPortraitMobile,
   isTightViewport,
@@ -31,7 +32,7 @@ export function getCamilaDiegoLayout(scene) {
     contentWidth,
     wordWrapWidth,
 
-    titleY: portrait ? 76 : tight ? 54 : 68,
+    titleY: portrait ? 64 : tight ? 54 : 68,
     titleFontSize: portrait ? '34px' : tight ? '32px' : '42px',
 
     bodyFontSize: portrait ? '23px' : tight ? '22px' : '28px',
@@ -47,7 +48,7 @@ export function getCamilaDiegoLayout(scene) {
 
 function spreadContent(y, portrait, fromMin, fromMax) {
 
-  return spreadY(y, portrait, fromMin, fromMax, 92, 568)
+  return spreadY(y, portrait, fromMin, fromMax, PORTRAIT_CONTENT_TOP, 572)
 
 }
 
@@ -70,16 +71,16 @@ export function getIntroLayout(layout) {
   // Portrait: título arriba, bloque de instrucciones dentro del panel, sin solapar
   return {
     ...layout,
-    titleY: 92,
+    titleY: 78,
     titleFontSize: '32px',
     bodyFontSize: '20px',
     bodyLineSpacing: 9,
     wordWrapWidth: Math.min(layout.wordWrapWidth, 500),
-    panelY: 328,
+    panelY: 314,
     panelW: 680,
     panelH: 355,
-    textY: 318,
-    continueY: 538,
+    textY: 304,
+    continueY: 524,
     continueW: 250
   }
 

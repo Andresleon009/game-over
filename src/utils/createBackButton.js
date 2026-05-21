@@ -14,9 +14,9 @@ export default function createBackButton(scene, targetScene, mode = 'back') {
 
     const backButton = scene.add.rectangle(
       nav.x,
-      50,
+      nav.y,
       nav.width,
-      45,
+      nav.height,
       0x334155
     ).setInteractive()
 
@@ -35,7 +35,7 @@ export default function createBackButton(scene, targetScene, mode = 'back') {
 
     const backText = scene.add.text(
       textX,
-      50,
+      nav.y,
       label,
       {
         fontSize: '20px',

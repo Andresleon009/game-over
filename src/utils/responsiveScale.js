@@ -21,6 +21,9 @@ export function isMobilePortraitViewport() {
 const GAME_WIDTH = 800
 const GAME_HEIGHT = 600
 
+/** Coordenada Y base del contenido principal en portrait (más arriba = menos vacío) */
+export const PORTRAIT_CONTENT_TOP = 76
+
 /**
  * Posición del botón VOLVER en portrait + ENVELOP.
  * Se ancla al borde izquierdo visible del canvas (no al centro del juego).
@@ -30,8 +33,10 @@ export function getBackButtonLayout() {
   if (!isMobilePortraitViewport()) {
     return {
       x: 90,
+      y: 50,
       originX: 0.5,
-      width: 120
+      width: 120,
+      height: 45
     }
   }
 
@@ -41,9 +46,11 @@ export function getBackButtonLayout() {
   const visibleLeft = ((GAME_WIDTH * scale) - parentW) / (2 * scale)
 
   return {
-    x: Math.round(visibleLeft + 16),
+    x: Math.round(visibleLeft + 8),
+    y: 36,
     originX: 0,
-    width: 112
+    width: 106,
+    height: 40
   }
 
 }

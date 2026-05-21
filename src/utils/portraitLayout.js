@@ -3,7 +3,10 @@
  * El canvas interno sigue siendo 800×600; se aprovecha mejor el eje Y.
  */
 
-import { isMobilePortraitViewport } from './responsiveScale'
+import {
+  isMobilePortraitViewport,
+  PORTRAIT_CONTENT_TOP
+} from './responsiveScale'
 
 export function isPortraitMobile(scene) {
 
@@ -37,7 +40,7 @@ export function isTightViewport(scene) {
 
 }
 
-export function spreadY(y, portrait, fromMin, fromMax, toMin = 90, toMax = 570) {
+export function spreadY(y, portrait, fromMin, fromMax, toMin = PORTRAIT_CONTENT_TOP, toMax = 572) {
 
   if (!portrait) {
     return y
@@ -109,13 +112,13 @@ export function getStackSceneLayout(scene, desktop) {
   return {
     portrait: true,
     centerX,
-    titleY: desktop.titleYPortrait ?? 76,
-    subtitleY: desktop.subtitleYPortrait ?? 118,
+    titleY: desktop.titleYPortrait ?? 64,
+    subtitleY: desktop.subtitleYPortrait ?? 104,
     buttonYs: spreadButtonYs(
       true,
       desktop.buttonYs,
-      desktop.buttonAreaTop ?? 205,
-      desktop.buttonAreaBottom ?? 525
+      desktop.buttonAreaTop ?? 188,
+      desktop.buttonAreaBottom ?? 528
     ),
     titleFontSize: desktop.titleFontSizePortrait ?? desktop.titleFontSize,
     subtitleFontSize: desktop.subtitleFontSizePortrait ?? desktop.subtitleFontSize,
@@ -149,7 +152,7 @@ export function getFlowSceneLayout(scene, desktop) {
     true,
     rangeMin,
     rangeMax,
-    desktop.spreadTop ?? 88,
+    desktop.spreadTop ?? PORTRAIT_CONTENT_TOP,
     desktop.spreadBottom ?? 572
   )
 
@@ -196,13 +199,13 @@ export function getAudioSceneLayout(scene) {
   return {
     portrait: true,
     centerX,
-    titleY: 82,
-    bodyY: 152,
-    panelY: 348,
+    titleY: 70,
+    bodyY: 140,
+    panelY: 336,
     panelH: 275,
-    vizY: 302,
-    controlsY: 412,
-    continueY: 548
+    vizY: 290,
+    controlsY: 400,
+    continueY: 536
   }
 
 }
@@ -228,12 +231,12 @@ export function getQuestionsSceneLayout(scene) {
   return {
     portrait: true,
     centerX,
-    titleY: 78,
-    panelY: 315,
+    titleY: 66,
+    panelY: 303,
     panelW: 680,
     panelH: 400,
-    questionYs: spreadYs([140, 240, 340], true, 130, 340, 155, 430),
-    actionY: 548
+    questionYs: spreadYs([140, 240, 340], true, 130, 340, 148, 422),
+    actionY: 536
   }
 
 }
