@@ -1,3 +1,5 @@
+import { getBackButtonLayout } from './responsiveScale'
+
 const NAV_DEPTH = 1000
 
 const LABELS = {
@@ -8,14 +10,17 @@ const LABELS = {
 export default function createBackButton(scene, targetScene, mode = 'back') {
 
     const label = LABELS[mode] || LABELS.back
+    const nav = getBackButtonLayout()
 
     const backButton = scene.add.rectangle(
-      90,
+      nav.x,
       50,
-      120,
+      nav.width,
       45,
       0x334155
     ).setInteractive()
+
+    backButton.setOrigin(nav.originX, 0.5)
 
     backButton.setStrokeStyle(
       2,
@@ -24,8 +29,12 @@ export default function createBackButton(scene, targetScene, mode = 'back') {
 
     backButton.setDepth(NAV_DEPTH)
 
+    const textX = nav.originX === 0
+      ? nav.x + nav.width / 2
+      : nav.x
+
     const backText = scene.add.text(
-      90,
+      textX,
       50,
       label,
       {

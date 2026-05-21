@@ -54,17 +54,33 @@ function spreadContent(y, portrait, fromMin, fromMax) {
 export function getIntroLayout(layout) {
 
   const { portrait, tight } = layout
-  const fromMin = 258
-  const fromMax = 512
 
+  if (!portrait) {
+    return {
+      ...layout,
+      panelY: tight ? 298 : 308,
+      panelW: tight ? 680 : 700,
+      panelH: tight ? 360 : 400,
+      textY: 258,
+      continueY: tight ? 498 : 512,
+      continueW: tight ? 240 : 260
+    }
+  }
+
+  // Portrait: título arriba, bloque de instrucciones dentro del panel, sin solapar
   return {
     ...layout,
-    panelY: portrait ? 310 : tight ? 298 : 308,
-    panelW: portrait ? 700 : tight ? 680 : 700,
-    panelH: portrait ? 370 : tight ? 360 : 400,
-    textY: spreadContent(258, portrait, fromMin, fromMax),
-    continueY: spreadContent(512, portrait, fromMin, fromMax),
-    continueW: portrait ? 250 : tight ? 240 : 260
+    titleY: 92,
+    titleFontSize: '32px',
+    bodyFontSize: '20px',
+    bodyLineSpacing: 9,
+    wordWrapWidth: Math.min(layout.wordWrapWidth, 500),
+    panelY: 328,
+    panelW: 680,
+    panelH: 355,
+    textY: 318,
+    continueY: 538,
+    continueW: 250
   }
 
 }

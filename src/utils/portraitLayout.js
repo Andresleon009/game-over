@@ -3,27 +3,37 @@
  * El canvas interno sigue siendo 800×600; se aprovecha mejor el eje Y.
  */
 
+import { isMobilePortraitViewport } from './responsiveScale'
+
 export function isPortraitMobile(scene) {
 
-  const display = scene.scale.displaySize
-
-  if (!display) {
-    return false
+  if (isMobilePortraitViewport()) {
+    return true
   }
 
-  return display.height > display.width
+  const parent = scene?.scale?.parentSize
+
+  if (parent?.width && parent?.height) {
+    return parent.height > parent.width && parent.width <= 900
+  }
+
+  return false
 
 }
 
 export function isTightViewport(scene) {
 
-  const display = scene.scale.displaySize
-
-  if (!display || isPortraitMobile(scene)) {
+  if (isPortraitMobile(scene)) {
     return false
   }
 
-  return display.height < 520
+  const parent = scene?.scale?.parentSize
+
+  if (parent?.height) {
+    return parent.height < 520
+  }
+
+  return window.innerHeight < 520
 
 }
 

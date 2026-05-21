@@ -1,5 +1,8 @@
 import Phaser from 'phaser'
 
+import './game.css'
+import { setupResponsiveScale } from './utils/responsiveScale'
+
 import IntroScene from './scenes/IntroScene'
 import MenuScene from './scenes/MenuScene'
 
@@ -34,7 +37,11 @@ const config = {
 
     mode: Phaser.Scale.FIT,
 
-    autoCenter: Phaser.Scale.CENTER_BOTH
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+
+    parent: 'app',
+
+    expandParent: true
 
   },
 
@@ -65,4 +72,10 @@ const config = {
 
 }
 
-new Phaser.Game(config)
+const game = new Phaser.Game(config)
+
+game.events.once('ready', () => {
+
+  setupResponsiveScale(game)
+
+})
