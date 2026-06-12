@@ -11,6 +11,8 @@ import Session2Scene from './scenes/Session2Scene'
 import Session3Scene from './scenes/Session3Scene'
 import Session4Scene from './scenes/Session4Scene'
 
+import SongSelectScene from './scenes/SongSelectScene'
+
 import AudioScene from './scenes/AudioScene'
 import ReflectionScene from './scenes/ReflectionScene'
 import LyricScene from './scenes/LyricScene'
@@ -54,6 +56,8 @@ const config = {
     Session2Scene,
     Session3Scene,
     Session4Scene,
+
+    SongSelectScene,
 
     AudioScene,
     ReflectionScene,

@@ -69,7 +69,7 @@ export default class Session1Scene extends Phaser.Scene {
 
     actividad1.on('pointerdown', () => {
 
-      this.scene.start('AudioScene')
+      this.scene.start('SongSelectScene')
 
     })
 

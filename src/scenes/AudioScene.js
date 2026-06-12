@@ -50,7 +50,7 @@ export default class AudioScene extends Phaser.Scene {
 
     createBackButton(
       this,
-      'Session1Scene'
+      'SongSelectScene'
     )
 
     // ---------- DECORACIÓN ----------
