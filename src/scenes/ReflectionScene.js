@@ -2,6 +2,7 @@ import Phaser from 'phaser'
 
 import createBackButton from '../utils/createBackButton'
 import { getFlowSceneLayout } from '../utils/portraitLayout'
+import { getSong, DEFAULT_SONG_ID } from '../data/songs'
 
 export default class ReflectionScene extends Phaser.Scene {
 
@@ -9,7 +10,15 @@ export default class ReflectionScene extends Phaser.Scene {
     super('ReflectionScene')
   }
 
+  init(data) {
+
+    this.songId = (data && data.songId) || DEFAULT_SONG_ID
+
+  }
+
   create() {
+
+    const song = getSong(this.songId)
 
     const layout = getFlowSceneLayout(this, {
       titleY: 120,
@@ -32,16 +41,17 @@ export default class ReflectionScene extends Phaser.Scene {
     this.cameras.main.setBackgroundColor('#0f172a')
 
     // BOTÓN VOLVER
+    // Nuevo orden: viene de QuestionsScene (discusión grupal)
     createBackButton(
       this,
-      'AudioScene'
+      'QuestionsScene'
     )
 
-    // TÍTULO
+    // TÍTULO - ahora es la Plenaria
     this.add.text(
       layout.centerX,
       layout.titleY,
-      '💭 Primera impresión',
+      '🗣️ Plenaria',
       {
         fontSize: layout.titleFontSize,
         color: '#f8fafc',
@@ -49,14 +59,18 @@ export default class ReflectionScene extends Phaser.Scene {
       }
     ).setOrigin(0.5)
 
-    // PREGUNTA
+    // PREGUNTA DE PLENARIA
     this.add.text(
       layout.centerX,
       layout.subtitleY,
-      '¿Qué te hizo pensar esta canción?',
+      song.plenaryQuestion,
       {
         fontSize: layout.bodyFontSize,
-        color: '#cbd5e1'
+        color: '#cbd5e1',
+        align: 'center',
+        wordWrap: {
+          width: layout.portrait ? 560 : 620
+        }
       }
     ).setOrigin(0.5)
 
@@ -75,14 +89,18 @@ export default class ReflectionScene extends Phaser.Scene {
       0x334155
     )
 
-    // TEXTO PLACEHOLDER
+    // TEXTO DE APOYO
     this.add.text(
       layout.centerX,
       layout.contentY,
-      'Escribe aquí tu reflexión...',
+      'Compartan sus ideas en plenaria con el grupo.',
       {
         fontSize: layout.portrait ? '22px' : '24px',
-        color: '#94a3b8'
+        color: '#94a3b8',
+        align: 'center',
+        wordWrap: {
+          width: layout.portrait ? 460 : 480
+        }
       }
     ).setOrigin(0.5)
 
@@ -126,10 +144,13 @@ export default class ReflectionScene extends Phaser.Scene {
 
     })
 
-    // CONTINUAR
+    // CONTINUAR -> Cierre pedagógico
     continueButton.on('pointerdown', () => {
 
-      this.scene.start('LyricScene')
+      this.scene.start(
+        'ClosingScene',
+        { songId: this.songId }
+      )
 
     })
 

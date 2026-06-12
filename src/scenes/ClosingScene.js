@@ -2,6 +2,7 @@ import Phaser from 'phaser'
 
 import createBackButton from '../utils/createBackButton'
 import { getClosingLayout } from '../utils/closingSceneLayout'
+import { getSong, DEFAULT_SONG_ID } from '../data/songs'
 
 export default class ClosingScene extends Phaser.Scene {
 
@@ -9,17 +10,25 @@ export default class ClosingScene extends Phaser.Scene {
     super('ClosingScene')
   }
 
+  init(data) {
+
+    this.songId = (data && data.songId) || DEFAULT_SONG_ID
+
+  }
+
   create() {
 
+    const song = getSong(this.songId)
     const layout = getClosingLayout(this)
 
     // FONDO
     this.cameras.main.setBackgroundColor('#0f172a')
 
     // BOTÓN VOLVER
+    // Nuevo orden: viene de ReflectionScene (Plenaria)
     createBackButton(
       this,
-      'QuestionsScene'
+      'ReflectionScene'
     )
 
     // DECORACIÓN
@@ -62,7 +71,7 @@ export default class ClosingScene extends Phaser.Scene {
     this.add.text(
       layout.centerX,
       layout.textY,
-      'Las canciones también transmiten ideas,\nroles y formas de relacionarnos.\n\nReflexionar sobre estos mensajes\npuede ayudarnos a construir vínculos\nmás respetuosos y saludables.',
+      song.closingText,
       {
         fontSize: layout.bodyFontSize,
         color: '#f8fafc',

@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 
 import { isPortraitMobile, getCenterX } from '../utils/portraitLayout'
+import theme from '../utils/theme'
 
 export default class IntroScene extends Phaser.Scene {
 
@@ -28,7 +29,7 @@ export default class IntroScene extends Phaser.Scene {
 
     // ---------- FONDO ----------
 
-    this.cameras.main.setBackgroundColor('#0f172a')
+    this.cameras.main.setBackgroundColor(theme.colors.backgroundHex)
 
     // ---------- TRANSICIÓN ----------
 
@@ -45,7 +46,7 @@ export default class IntroScene extends Phaser.Scene {
       120,
       100,
       180,
-      0x7c3aed,
+      theme.colors.decorationViolet,
       0.12
     )
 
@@ -53,7 +54,7 @@ export default class IntroScene extends Phaser.Scene {
       700,
       520,
       220,
-      0x06b6d4,
+      theme.colors.decorationCyan,
       0.08
     )
 
@@ -72,9 +73,8 @@ export default class IntroScene extends Phaser.Scene {
       titleY,
       'GAME OVER',
       {
-        fontSize: portrait ? '46px' : '52px',
-        fontStyle: 'bold',
-        color: '#f8fafc'
+        ...theme.text.title,
+        fontSize: portrait ? '46px' : '52px'
       }
     ).setOrigin(0.5)
 
@@ -85,8 +85,8 @@ export default class IntroScene extends Phaser.Scene {
       subtitleY,
       'Prevención de violencia\ny reflexión crítica',
       {
+        ...theme.text.subtitle,
         fontSize: portrait ? '25px' : '28px',
-        color: '#cbd5e1',
         align: 'center',
         lineSpacing: 10
       }
@@ -99,12 +99,12 @@ export default class IntroScene extends Phaser.Scene {
       buttonY,
       portrait ? 260 : 280,
       portrait ? 72 : 80,
-      0x7c3aed
+      theme.colors.accentPrimary
     ).setInteractive()
 
     boton.setStrokeStyle(
-      2,
-      0xffffff
+      theme.button.strokeWidth,
+      theme.button.strokeColor
     )
 
     const textoBoton = this.add.text(
@@ -112,9 +112,8 @@ export default class IntroScene extends Phaser.Scene {
       buttonY,
       'INGRESAR',
       {
-        fontSize: portrait ? '27px' : '30px',
-        fontStyle: 'bold',
-        color: '#ffffff'
+        ...theme.text.button,
+        fontSize: portrait ? '27px' : '30px'
       }
     ).setOrigin(0.5)
 
@@ -122,8 +121,8 @@ export default class IntroScene extends Phaser.Scene {
 
     boton.on('pointerover', () => {
 
-      boton.setScale(1.04)
-      textoBoton.setScale(1.04)
+      boton.setScale(theme.button.hoverScale)
+      textoBoton.setScale(theme.button.hoverScale)
 
     })
 

@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 
 import { getStackSceneLayout } from '../utils/portraitLayout'
+import theme from '../utils/theme'
 
 export default class MenuScene extends Phaser.Scene {
 
@@ -25,7 +26,7 @@ export default class MenuScene extends Phaser.Scene {
 
     // ---------- FONDO ----------
 
-    this.cameras.main.setBackgroundColor('#0f172a')
+    this.cameras.main.setBackgroundColor(theme.colors.backgroundHex)
 
     // ---------- DECORACIÓN ----------
 
@@ -33,7 +34,7 @@ export default class MenuScene extends Phaser.Scene {
       120,
       layout.portrait ? 90 : 100,
       180,
-      0x7c3aed,
+      theme.colors.decorationViolet,
       0.10
     )
 
@@ -41,7 +42,7 @@ export default class MenuScene extends Phaser.Scene {
       700,
       layout.portrait ? 500 : 520,
       220,
-      0x06b6d4,
+      theme.colors.decorationCyan,
       0.08
     )
 
@@ -52,9 +53,8 @@ export default class MenuScene extends Phaser.Scene {
       layout.titleY,
       'GAME OVER',
       {
-        fontSize: layout.titleFontSize,
-        fontStyle: 'bold',
-        color: '#f8fafc'
+        ...theme.text.title,
+        fontSize: layout.titleFontSize
       }
     ).setOrigin(0.5)
 
@@ -65,18 +65,18 @@ export default class MenuScene extends Phaser.Scene {
       layout.subtitleY,
       'Selecciona una sesión',
       {
-        fontSize: layout.subtitleFontSize,
-        color: '#cbd5e1'
+        ...theme.text.subtitle,
+        fontSize: layout.subtitleFontSize
       }
     ).setOrigin(0.5)
 
     // ---------- SESIONES ----------
 
     const sessions = [
-      { label: 'Sesión 1\nDiferentes pero iguales', color: 0x06b6d4, scene: 'Session1Scene' },
-      { label: 'Sesión 2\nLa violencia se pinta de amor', color: 0x7c3aed, scene: 'Session2Scene' },
-      { label: 'Sesión 3\n¡Ponte la camiseta!', color: 0xf59e0b, scene: null },
-      { label: 'Sesión 4\nJuntas y juntos paremos la violencia', color: 0x10b981, scene: null }
+      { label: 'Sesión 1\nDiferentes pero iguales', color: theme.colors.sessions.session1, scene: 'Session1Scene' },
+      { label: 'Sesión 2\nLa violencia se pinta de amor', color: theme.colors.sessions.session2, scene: 'Session2Scene' },
+      { label: 'Sesión 3\n¡Ponte la camiseta!', color: theme.colors.sessions.session3, scene: null },
+      { label: 'Sesión 4\nJuntas y juntos paremos la violencia', color: theme.colors.sessions.session4, scene: null }
     ]
 
     sessions.forEach((session, index) => {
@@ -116,8 +116,8 @@ export default class MenuScene extends Phaser.Scene {
     ).setInteractive()
 
     button.setStrokeStyle(
-      2,
-      0xffffff
+      theme.button.strokeWidth,
+      theme.button.strokeColor
     )
 
     const label = this.add.text(
@@ -125,17 +125,16 @@ export default class MenuScene extends Phaser.Scene {
       y,
       text,
       {
+        ...theme.text.button,
         fontSize,
-        align: 'center',
-        color: '#ffffff',
-        fontStyle: 'bold'
+        align: 'center'
       }
     ).setOrigin(0.5)
 
     button.on('pointerover', () => {
 
-      button.setScale(1.02)
-      label.setScale(1.02)
+      button.setScale(theme.button.hoverScale)
+      label.setScale(theme.button.hoverScale)
 
     })
 

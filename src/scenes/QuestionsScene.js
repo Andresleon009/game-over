@@ -2,6 +2,7 @@ import Phaser from 'phaser'
 
 import createBackButton from '../utils/createBackButton'
 import { getQuestionsSceneLayout } from '../utils/portraitLayout'
+import { getSong, DEFAULT_SONG_ID } from '../data/songs'
 
 export default class QuestionsScene extends Phaser.Scene {
 
@@ -9,15 +10,18 @@ export default class QuestionsScene extends Phaser.Scene {
     super('QuestionsScene')
   }
 
+  init(data) {
+
+    this.songId = (data && data.songId) || DEFAULT_SONG_ID
+
+  }
+
   create() {
 
+    const song = getSong(this.songId)
     const layout = getQuestionsSceneLayout(this)
 
-    const questions = [
-      '1. ¿De qué habla la frase?',
-      '2. ¿Qué piensas sobre el contenido de la frase?',
-      '3. ¿Crees que estas canciones pueden influir en cómo vemos o tratamos a otras personas?'
-    ]
+    const questions = song.discussionQuestions
 
     // FONDO
     this.cameras.main.setBackgroundColor('#0f172a')
@@ -116,10 +120,13 @@ export default class QuestionsScene extends Phaser.Scene {
 
     })
 
-    // CONTINUAR
+    // CONTINUAR -> Plenaria (ReflectionScene)
     continueButton.on('pointerdown', () => {
 
-      this.scene.start('ClosingScene')
+      this.scene.start(
+        'ReflectionScene',
+        { songId: this.songId }
+      )
 
     })
 

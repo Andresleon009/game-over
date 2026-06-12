@@ -2,6 +2,7 @@ import Phaser from 'phaser'
 
 import createBackButton from '../utils/createBackButton'
 import { getAudioSceneLayout } from '../utils/portraitLayout'
+import { getSong, DEFAULT_SONG_ID } from '../data/songs'
 
 export default class AudioScene extends Phaser.Scene {
 
@@ -9,16 +10,26 @@ export default class AudioScene extends Phaser.Scene {
     super('AudioScene')
   }
 
+  init(data) {
+
+    this.songId = (data && data.songId) || DEFAULT_SONG_ID
+
+  }
+
   preload() {
 
+    const song = getSong(this.songId)
+
     this.load.audio(
-      'cancion',
-      'audio/cancion1.mp3'
+      song.audioKey,
+      song.audioFile
     )
 
   }
 
   create() {
+
+    const song = getSong(this.songId)
 
     // ---------- TRANSICIÓN ENTRADA ----------
 
@@ -70,7 +81,7 @@ export default class AudioScene extends Phaser.Scene {
     this.add.text(
       layout.centerX,
       layout.bodyY,
-      'Escucha el fragmento musical\ny luego comparte tu primera impresión.',
+      `${song.title} - ${song.artist}\nEscucha el fragmento musical\ny luego comparte tu primera impresión.`,
       {
         fontSize: layout.portrait ? '22px' : '24px',
         color: '#cbd5e1',
@@ -97,7 +108,7 @@ export default class AudioScene extends Phaser.Scene {
 
     // ---------- AUDIO ----------
 
-    const musica = this.sound.add('cancion')
+    const musica = this.sound.add(song.audioKey)
 
     // ---------- VISUALIZADOR ----------
 
@@ -344,6 +355,7 @@ export default class AudioScene extends Phaser.Scene {
     })
 
     // ---------- CONTINUAR ----------
+    // Nuevo orden: AudioScene -> LyricScene (extracto)
 
     continueButton.on('pointerdown', () => {
 
@@ -360,7 +372,10 @@ export default class AudioScene extends Phaser.Scene {
 
       this.time.delayedCall(200, () => {
 
-        this.scene.start('ReflectionScene')
+        this.scene.start(
+          'LyricScene',
+          { songId: this.songId }
+        )
 
       })
 
